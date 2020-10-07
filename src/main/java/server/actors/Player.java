@@ -1,4 +1,6 @@
-package actors;
+package server.actors;
+
+import server.PlayerConnector;
 
 public class Player {
 
@@ -6,9 +8,11 @@ public class Player {
     private int place = -1;
     private boolean active = true;
     private Table table = null;
+    private PlayerConnector playerConnector;
 
-    public Player(String hashID) {
+    public Player(String hashID, PlayerConnector playerConnector) {
         this.hashID = hashID;
+        this.playerConnector = playerConnector;
     }
 
     public String getHashID() {
@@ -37,5 +41,17 @@ public class Player {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    public PlayerConnector getPlayerConnector() {
+        return playerConnector;
+    }
+
+    public void disconnect(){
+        playerConnector.closeConnection();
+    }
+
+    public void leaveTable(){
+        this.table.removePlayer(this);
     }
 }

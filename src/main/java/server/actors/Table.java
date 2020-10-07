@@ -1,4 +1,4 @@
-package actors;
+package server.actors;
 
 
 import java.util.ArrayList;
@@ -31,5 +31,7 @@ public class Table {
         return playersCounter;
     }
 
-
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }

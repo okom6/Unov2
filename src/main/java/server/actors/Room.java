@@ -1,4 +1,6 @@
-package actors;
+package server.actors;
+
+import server.Game;
 
 import java.util.ArrayList;
 
@@ -21,25 +23,30 @@ public class Room {
         tables.remove(table);
     }
 
-    public void addPlayer(Player player){
+    public void addPlayer(Player player, int maxPlayers){
         players.add(player);
-        addPlayerToTable(player);
+        addPlayerToTable(player, maxPlayers);
     }
 
     public void removePlayer(Player player){
         player.getTable().removePlayer(player);
         player.setTable(null);
         players.remove(player);
+        player.disconnect();
     }
 
-    public void addPlayerToTable(Player player){
+    public void addPlayerToTable(Player player, int maxPlayers){
         try {
-            Table table = tables.stream().filter(t -> t.getPlayersCounter() < t.getMaxPlayers()).findFirst().get();
+            Table table = tables.stream().filter(t -> t.getPlayersCounter() < t.getMaxPlayers())
+                    .filter(t -> t.getMaxPlayers() == maxPlayers).findFirst().get();
             table.addPlayer(player);
             player.setTable(table);
+            if(table.getMaxPlayers() == table.getPlayersCounter()){
+                Game.startGame(table);
+            }
         } catch (Exception NoSuchElementException){
-            addTable(3);
-            addPlayerToTable(player);
+            addTable(maxPlayers);
+            addPlayerToTable(player, maxPlayers);
         }
     }
 

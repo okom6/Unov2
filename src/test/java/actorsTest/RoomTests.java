@@ -1,8 +1,8 @@
 package actorsTest;
 
-import actors.Player;
-import actors.Room;
-import actors.Table;
+import server.PlayerConnector;
+import server.actors.Player;
+import server.actors.Room;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -39,9 +39,9 @@ public class RoomTests {
     public void addPlayerToTableSuccessfull(){
         Room room = Room.getInstance();
         room.makeRoomEmpty();
-        Player player = new Player("1");
+        Player player = new Player("1", new PlayerConnector(null, null, null));
         room.addTable(3);
-        room.addPlayerToTable(player);
+        room.addPlayerToTable(player, 3);
         assertNotNull(player.getTable());
     }
 
@@ -49,8 +49,8 @@ public class RoomTests {
     public void addPlayerToFullTablesSuccessfull(){
         Room room = Room.getInstance();
         room.makeRoomEmpty();
-        Player player = new Player("1");
-        room.addPlayerToTable(player);
+        Player player = new Player("1", new PlayerConnector(null, null, null));
+        room.addPlayerToTable(player, 3);
         assertEquals(1, room.getTables().size());
         assertNotNull(player.getTable());
     }
@@ -60,7 +60,7 @@ public class RoomTests {
         Room room = Room.getInstance();
         room.makeRoomEmpty();
         room.addTable(3);
-        room.addPlayer(new Player("1"));
+        room.addPlayer(new Player("1", new PlayerConnector(null, null, null)), 3);
         assertEquals(1, room.getPlayers().size());
     }
 
@@ -68,9 +68,9 @@ public class RoomTests {
     public void removePlayerSuccessfull(){
         Room room = Room.getInstance();
         room.makeRoomEmpty();
-        Player player = new Player("1");
+        Player player = new Player("1", new PlayerConnector(null, null, null));
         room.addTable(3);
-        room.addPlayer(player);
+        room.addPlayer(player, 3);
         room.removePlayer(player);
         assertEquals(0, room.getPlayers().size());
     }
