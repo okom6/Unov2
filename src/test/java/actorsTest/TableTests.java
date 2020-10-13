@@ -36,4 +36,12 @@ public class TableTests {
         table.removePlayer(player);
         assertEquals(0, table.getPlayersCounter());
     }
+
+    @Test
+    public void getPlayersSuccessfull(){
+        Table table = new Table(3);
+        Player player = new Player("1", new PlayerConnector(null, null, null));
+        table.addPlayer(player);
+        assertEquals(player, table.getPlayers().get(0));
+    }
 }

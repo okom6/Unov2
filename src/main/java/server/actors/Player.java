@@ -53,5 +53,6 @@ public class Player {
 
     public void leaveTable(){
         this.table.removePlayer(this);
+        this.table = null;
     }
 }

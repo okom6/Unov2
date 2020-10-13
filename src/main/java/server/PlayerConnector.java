@@ -16,18 +16,6 @@ public class PlayerConnector {
         this.in = in;
     }
 
-    public Socket getClientSocket() {
-        return clientSocket;
-    }
-
-    public PrintWriter getOut() {
-        return out;
-    }
-
-    public BufferedReader getIn() {
-        return in;
-    }
-
     public String getInfoFromPlayer(){
         try {
             return in.readLine();
