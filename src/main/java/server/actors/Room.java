@@ -1,6 +1,6 @@
 package server.actors;
 
-import server.Game;
+import server.game.Game;
 
 import java.util.ArrayList;
 

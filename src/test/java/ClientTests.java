@@ -1,10 +1,3 @@
-import client.Client;
-import org.junit.Test;
-import server.Game;
-import server.PlayerConnector;
-import server.actors.Player;
-import server.actors.Table;
-
 import static org.mockito.Mockito.mock;
 
 public class ClientTests {

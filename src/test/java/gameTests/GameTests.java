@@ -1,5 +1,7 @@
+package gameTests;
+
 import org.junit.Test;
-import server.Game;
+import server.game.Game;
 import server.PlayerConnector;
 import server.actors.Player;
 import server.actors.Table;
