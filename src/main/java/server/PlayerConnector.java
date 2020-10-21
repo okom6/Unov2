@@ -1,8 +1,8 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import server.game.actors.PlayerGameStateToSend;
+
+import java.io.*;
 import java.net.Socket;
 
 public class PlayerConnector {
@@ -27,6 +27,16 @@ public class PlayerConnector {
 
     public void sendInfoToPlayer(String message){
         out.println(message);
+    }
+
+    public void sendObjectToPlayer(PlayerGameStateToSend playerGameStateToSend){
+        try {
+            OutputStream outputStream = clientSocket.getOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(playerGameStateToSend);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void closeConnection(){

@@ -1,6 +1,8 @@
 package server.game.actors;
 
-public class Card {
+import java.io.Serializable;
+
+public class Card implements Serializable {
     char colour;
     char character;
 

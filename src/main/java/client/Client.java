@@ -1,9 +1,8 @@
 package client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import server.game.actors.PlayerGameStateToSend;
+
+import java.io.*;
 import java.net.Socket;
 
 public class Client {
@@ -35,6 +34,19 @@ public class Client {
         return resp;
     }
 
+    public PlayerGameStateToSend reciveObject() {
+        try {
+            InputStream inputStream = clientSocket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            return (PlayerGameStateToSend) objectInputStream.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void stopConnection() {
         try {
             in.close();
@@ -48,8 +60,16 @@ public class Client {
     public static void main(String[] args){
         Client client = new Client();
         client.startConnection("localhost", 7777);
+
+        client.sendMessage(Integer.toString(Integer.parseInt(client.reciveMessage()) + 1));
         client.sendMessage("1");
+
+        PlayerGameStateToSend playerGameStateToSend = client.reciveObject();
+        System.out.println(playerGameStateToSend.getPlayersCardNumbers());
+        System.out.println(playerGameStateToSend.getPlayerNumber());
+        System.out.println(playerGameStateToSend.getCardOnTop().getCharacter() + " - " + playerGameStateToSend.getCardOnTop().getColour());
         System.out.println(client.reciveMessage());
+
         client.stopConnection();
     }
 }

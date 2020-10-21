@@ -44,6 +44,11 @@ public class Server {
                         new PrintWriter(clientSocket.getOutputStream(), true),
                         new BufferedReader(new InputStreamReader(clientSocket.getInputStream())));
 
+                if(!checkConnection(playerConnector)){
+                    playerConnector.closeConnection();
+                    return;
+                }
+
                 Room.getInstance().addPlayer(new Player(
                         Integer.toString(Room.getInstance().getPlayers().size() +
                                 ThreadLocalRandom.current().nextInt(1, 9999999 + 1)),
@@ -54,6 +59,16 @@ public class Server {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        public boolean checkConnection(PlayerConnector playerConnector){
+            int randNumber = new Random().nextInt(50);
+
+            playerConnector.sendInfoToPlayer(Integer.toString(randNumber));
+            if(playerConnector.getInfoFromPlayer().equals(Integer.toString(randNumber + 1))){
+                return true;
+            }
+            return false;
         }
     }
 
