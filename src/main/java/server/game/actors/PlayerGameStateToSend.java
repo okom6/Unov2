@@ -8,9 +8,14 @@ public class PlayerGameStateToSend implements Serializable {
     private ArrayList<Integer> playersCardNumbers = new ArrayList<>();
     private ArrayList<Card> handDeck = new ArrayList();
     private int playerNumber = 0;
+    private int playerTurn;
+    private char declaratedColour;
+    private boolean stopBattle;
 
-    public PlayerGameStateToSend(Card cardOnTop) {
+    public PlayerGameStateToSend(Card cardOnTop, char declaratedColour, boolean stopBattle) {
         this.cardOnTop = cardOnTop;
+        this.declaratedColour = declaratedColour;
+        this.stopBattle = stopBattle;
     }
 
     public void setHandDeck(ArrayList<Card> handDeck) {
@@ -19,6 +24,10 @@ public class PlayerGameStateToSend implements Serializable {
 
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
+    }
+
+    public void setPlayerTurn(int playerTurn) {
+        this.playerTurn = playerTurn;
     }
 
     public ArrayList<Integer> getPlayersCardNumbers() {
@@ -35,5 +44,13 @@ public class PlayerGameStateToSend implements Serializable {
 
     public Card getCardOnTop() {
         return cardOnTop;
+    }
+
+    public char getDeclaratedColour() {
+        return declaratedColour;
+    }
+
+    public int isPlayerTurn() {
+        return playerTurn;
     }
 }
