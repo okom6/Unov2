@@ -32,7 +32,7 @@ public class GameOperations {
         }
     }
 
-    public boolean checkNumberOfActivePlayers(ArrayList<PlayerDeck> playerDeckArrayList){
+    public int checkNumberOfActivePlayers(ArrayList<PlayerDeck> playerDeckArrayList){
         int counter = 0;
 
         for (PlayerDeck pd: playerDeckArrayList) {
@@ -41,7 +41,8 @@ public class GameOperations {
             }
         }
 
-        return (counter > 1) ? false : true;
+        return counter;
+        //return (counter > 1) ? false : true;
     }
 
     public boolean checkRules(PlayerDeck actualPlayerTurn, ArrayList<Card> stack, String response, char declaratedColour, boolean stopBattle){
@@ -83,5 +84,50 @@ public class GameOperations {
         }
 
         return false;
+    }
+
+    public void savePlayerMove(PlayerDeck actualPlayerTurn, ArrayList<Card> stack, ArrayList<Card> deck, String response, char declaratedColour, boolean stopBattle, int gameMove){
+        char action = response.split("-")[0].charAt(0);
+        int responseNumber = Integer.parseInt(response.split("-")[1]);
+        char colourRequest = response.split("-")[2].charAt(0);
+        Card choosenCard = actualPlayerTurn.getHandDeck().remove(responseNumber);
+        Card cardOnTop = stack.get(stack.size() - 1);
+
+        //jeśli dobrał to sprawdzić kartę na stosie czy ma byc dobrane 1, 2 lub 4 karty
+        //obsluzyć zmiane koloru kartą specjalną
+        //nie zapomnieć o zmianie statusu declaratedColour
+        //stworzyć dobieranie oparte o wartości karty na górze stosu
+        //obsługa walki o stop
+        //jeśli dobrze wybrał to dodać kartę do stosu
+
+        //dobieranie
+        //jeśli masz akcję walki o stop to nie możesz dobierać ale dobranie oznacza poddanie się w walce
+        if(action == 't'){
+            if(stopBattle){
+                stopBattle = false;
+            } else if(cardOnTop.getColour() == 'b' && cardOnTop.getCharacter() == '4'){
+                takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 4);
+            } else if(cardOnTop.getCharacter() == 'g'){
+                takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 2);
+            } else{
+                takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 1);
+            }
+            return;
+        }
+
+        stack.add(choosenCard);
+        if(choosenCard.getColour() == 'b'){
+            declaratedColour = colourRequest;
+        } else if(choosenCard.getCharacter() == 's'){
+            stopBattle = true;
+        } else if(choosenCard.getCharacter() == 't'){
+            gameMove *= -1;
+        }
+    }
+
+    public void takeCardsFromMainDeckToPlayer(PlayerDeck actualPlayerTurn, ArrayList<Card> deck, int cardNumbers){
+        for(int i = 0; i < cardNumbers; ++i){
+            actualPlayerTurn.getHandDeck().add(deck.remove(0));
+        }
     }
 }

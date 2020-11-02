@@ -19,6 +19,7 @@ public class Game {
         int winnerCounter = 0;
         char declaratedColour = stack.get(0).getColour();
         boolean stopBattle = false;
+        int gameMove = 1;
 
         //wysłać karty do wszystkich graczy i informacje i ilości kart przeciwników
         gameOperations.sendGameStateToAllPlayers(playerDeckArrayList, table, stack, -1, declaratedColour, stopBattle);
@@ -28,7 +29,7 @@ public class Game {
             //jesli deck ma mniej niz 5 kart to zabrać karty ze stosu i dodać do decka
             if (deck.size() < 5){
                 while(stack.size() > 1){
-                    deck.add(stack.remove(1));
+                    deck.add(stack.remove(0));
                 }
             }
 
@@ -64,7 +65,7 @@ public class Game {
             //stworzyć dobieranie oparte o wartości karty na górze stosu
             //obsługa walki o stop
             //jeśli dobrze wybrał to dodać kartę do stosu
-            //gameOperations.savePlayerChoose(actualPlayerTurn, stack, response, declaratedColour, stopBattle);
+            gameOperations.savePlayerMove(actualPlayerTurn, stack, deck, response, declaratedColour, stopBattle, gameMove);
 
             //sprawdzić czy gracz w tej chwili wygrał (jeśli wygrał to przydzielic mu miejce [pole place])
             if(actualPlayerTurn.getHandDeck().size() == 1){
@@ -74,10 +75,10 @@ public class Game {
             }
 
             //zmiana gracza (i++) lub (i--)
-            i++;
+            i += gameMove;
 
             //jeśli gra już tylko 1 gracz to zakończ rozgrywkę
-            endGame = gameOperations.checkNumberOfActivePlayers(playerDeckArrayList);
+            endGame = (gameOperations.checkNumberOfActivePlayers(playerDeckArrayList) > 1) ? false: true;
         }
 
         for (PlayerDeck pd: playerDeckArrayList) {
