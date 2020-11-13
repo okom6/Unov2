@@ -15,17 +15,20 @@ public class Game {
         ArrayList<PlayerDeck> playerDeckArrayList = croupier.deal(table, deck);
         ArrayList<Card> stack = new ArrayList<>();
         gameOperations.addFirstCardToStack(stack, deck); //dodać weryfikacje czy aby pierwsza karta nie jest czarna, jeśli tak to wybrac nową
-        boolean endGame = false;
+        GameInfo gameInfo = new GameInfo(
+                false, 0, stack.get(0).getColour(), false, 1);
+
+        /*boolean endGame = false;
         int winnerCounter = 0;
         char declaratedColour = stack.get(0).getColour();
         boolean stopBattle = false;
-        int gameMove = 1;
+        int gameMove = 1;*/
 
         //wysłać karty do wszystkich graczy i informacje i ilości kart przeciwników
-        gameOperations.sendGameStateToAllPlayers(playerDeckArrayList, table, stack, -1, declaratedColour, stopBattle);
+        gameOperations.sendGameStateToAllPlayers(playerDeckArrayList, stack, -1, gameInfo);
 
         int i = 0;
-        while(!endGame){
+        while(!gameInfo.isEndGame()){
             //jesli deck ma mniej niz 5 kart to zabrać karty ze stosu i dodać do decka
             if (deck.size() < 5){
                 while(stack.size() > 1){
@@ -42,14 +45,14 @@ public class Game {
 
             //wysłać info graczowi że jest jego tura
             //wysłać graczowi wszystkie jego karty, ilość kart innych, kartę na stosie, a innym graczom ilość kart innych, kartę na stosie
-            gameOperations.sendGameStateToAllPlayers(playerDeckArrayList, table, stack, i % table.getMaxPlayers(), declaratedColour, stopBattle);
+            gameOperations.sendGameStateToAllPlayers(playerDeckArrayList, stack, i % table.getMaxPlayers(), gameInfo);
 
             //odebrać info od gracza jaką wybrał kartę (lub czy dobrał) ([czynność-numer (karty lub dobrania)-rządanie koloru]
             String response = actualPlayerTurn.getPlayer().getPlayerConnector().getInfoFromPlayer();
             //int responseNumberumber = Integer.parseInt(response.split("-")[0]);
 
             //jeśli źle wybrał to ponowić proźbę o wybranie
-            while(!gameOperations.checkRules(actualPlayerTurn, stack, response, declaratedColour, stopBattle)){
+            while(!gameOperations.checkRules(actualPlayerTurn, stack, response, gameInfo)){
                 actualPlayerTurn.getPlayer().getPlayerConnector().sendInfoToPlayer("wrong");
                 response = actualPlayerTurn.getPlayer().getPlayerConnector().getInfoFromPlayer();
             }
@@ -65,20 +68,21 @@ public class Game {
             //stworzyć dobieranie oparte o wartości karty na górze stosu
             //obsługa walki o stop
             //jeśli dobrze wybrał to dodać kartę do stosu
-            gameOperations.savePlayerMove(actualPlayerTurn, stack, deck, response, declaratedColour, stopBattle, gameMove);
+            gameOperations.savePlayerMove(actualPlayerTurn, stack, deck, response, gameInfo);
 
             //sprawdzić czy gracz w tej chwili wygrał (jeśli wygrał to przydzielic mu miejce [pole place])
             if(actualPlayerTurn.getHandDeck().size() == 1){
-                ++winnerCounter;
-                actualPlayerTurn.getPlayer().setPlace(winnerCounter);
+                gameInfo.setWinnerCounter(gameInfo.getWinnerCounter() + 1);
+                actualPlayerTurn.getPlayer().setPlace(gameInfo.getWinnerCounter());
                 actualPlayerTurn.getPlayer().setActive(false);
             }
 
             //zmiana gracza (i++) lub (i--)
-            i += gameMove;
+            i += gameInfo.getGameMove();
 
             //jeśli gra już tylko 1 gracz to zakończ rozgrywkę
-            endGame = (gameOperations.checkNumberOfActivePlayers(playerDeckArrayList) > 1) ? false: true;
+            gameInfo.setEndGame(
+                    (gameOperations.checkNumberOfActivePlayers(playerDeckArrayList) > 1) ? false: true );
         }
 
         for (PlayerDeck pd: playerDeckArrayList) {

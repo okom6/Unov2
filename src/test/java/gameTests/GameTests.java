@@ -11,12 +11,12 @@ import static org.mockito.Mockito.mock;
 
 public class GameTests {
 
-    @Test
+    /*@Test
     public void getPlayersSuccessfull(){
         Table table = new Table(3);
         PlayerConnector playerConnector = mock(PlayerConnector.class);
         Player player = new Player("1", playerConnector);
         table.addPlayer(player);
         Game.startGame(table);
-    }
+    }*/
 }

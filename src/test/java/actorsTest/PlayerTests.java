@@ -53,7 +53,7 @@ public class PlayerTests {
     }
 
     @Test
-    public void playerLeaveTAbleSuccessfull(){
+    public void playerLeaveTableSuccessfull(){
         Table table = new Table(3);
         Player player = new Player("1", new PlayerConnector(null, null, null));
         table.addPlayer(player);

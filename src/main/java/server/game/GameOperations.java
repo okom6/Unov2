@@ -17,8 +17,8 @@ public class GameOperations {
         }
     }
 
-    public void sendGameStateToAllPlayers(ArrayList<PlayerDeck> playerDeckArrayList, Table table, ArrayList<Card> stack, int playerTurn, char declaratedColour, boolean stopBattle){
-        PlayerGameStateToSend playerGameStateToSend = new PlayerGameStateToSend(stack.get(stack.size() - 1), declaratedColour, stopBattle);
+    public void sendGameStateToAllPlayers(ArrayList<PlayerDeck> playerDeckArrayList, ArrayList<Card> stack, int playerTurn, GameInfo gameInfo){
+        PlayerGameStateToSend playerGameStateToSend = new PlayerGameStateToSend(stack.get(stack.size() - 1), gameInfo.getDeclaratedColour(), gameInfo.isStopBattle());
         playerGameStateToSend.setPlayerTurn(playerTurn);
 
         for(int i = 0; i < playerDeckArrayList.size(); ++i){
@@ -36,7 +36,7 @@ public class GameOperations {
         int counter = 0;
 
         for (PlayerDeck pd: playerDeckArrayList) {
-            if(pd.getPlayer().getPlace() > -1){
+            if(pd.getPlayer().getPlace() == -1){
                 counter++;
             }
         }
@@ -45,12 +45,10 @@ public class GameOperations {
         //return (counter > 1) ? false : true;
     }
 
-    public boolean checkRules(PlayerDeck actualPlayerTurn, ArrayList<Card> stack, String response, char declaratedColour, boolean stopBattle){
+    public boolean checkRules(PlayerDeck actualPlayerTurn, ArrayList<Card> stack, String response, GameInfo gameInfo){
         char action = response.split("-")[0].charAt(0);
         int responseNumber = Integer.parseInt(response.split("-")[1]);
         char colourRequest = response.split("-")[2].charAt(0);
-        Card choosenCard = actualPlayerTurn.getHandDeck().get(responseNumber);
-        Card cardOnTop = stack.get(stack.size() - 1);
 
         //dobieranie
         //jeśli masz akcję walki o stop to nie możesz dobierać ale dobranie oznacza poddanie się w walce
@@ -58,13 +56,16 @@ public class GameOperations {
             return true;
         }
 
-        if(stopBattle && choosenCard.getCharacter() == 's'){
+        Card choosenCard = actualPlayerTurn.getHandDeck().get(responseNumber);
+        Card cardOnTop = stack.get(stack.size() - 1);
+
+        if(gameInfo.isStopBattle() && choosenCard.getCharacter() == 's'){
             return true;
         }
 
         //kładzenie
         if(cardOnTop.getColour() == 'b' && cardOnTop.getCharacter() == 'c'){
-            if((declaratedColour == choosenCard.getColour())
+            if((gameInfo.getDeclaratedColour() == choosenCard.getColour())
                     || choosenCard.getColour() == 'b'){
                 return true;
             }
@@ -86,11 +87,10 @@ public class GameOperations {
         return false;
     }
 
-    public void savePlayerMove(PlayerDeck actualPlayerTurn, ArrayList<Card> stack, ArrayList<Card> deck, String response, char declaratedColour, boolean stopBattle, int gameMove){
+    public void savePlayerMove(PlayerDeck actualPlayerTurn, ArrayList<Card> stack, ArrayList<Card> deck, String response, GameInfo gameInfo){
         char action = response.split("-")[0].charAt(0);
         int responseNumber = Integer.parseInt(response.split("-")[1]);
         char colourRequest = response.split("-")[2].charAt(0);
-        Card choosenCard = actualPlayerTurn.getHandDeck().remove(responseNumber);
         Card cardOnTop = stack.get(stack.size() - 1);
 
         //jeśli dobrał to sprawdzić kartę na stosie czy ma byc dobrane 1, 2 lub 4 karty
@@ -103,8 +103,8 @@ public class GameOperations {
         //dobieranie
         //jeśli masz akcję walki o stop to nie możesz dobierać ale dobranie oznacza poddanie się w walce
         if(action == 't'){
-            if(stopBattle){
-                stopBattle = false;
+            if(gameInfo.isStopBattle()){
+                gameInfo.setStopBattle(false);
             } else if(cardOnTop.getColour() == 'b' && cardOnTop.getCharacter() == '4'){
                 takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 4);
             } else if(cardOnTop.getCharacter() == 'g'){
@@ -115,13 +115,15 @@ public class GameOperations {
             return;
         }
 
+        Card choosenCard = actualPlayerTurn.getHandDeck().remove(responseNumber);
         stack.add(choosenCard);
+
         if(choosenCard.getColour() == 'b'){
-            declaratedColour = colourRequest;
+            gameInfo.setDeclaratedColour(colourRequest);
         } else if(choosenCard.getCharacter() == 's'){
-            stopBattle = true;
+            gameInfo.setStopBattle(true);
         } else if(choosenCard.getCharacter() == 't'){
-            gameMove *= -1;
+            gameInfo.setGameMove(gameInfo.getGameMove() * -1);
         }
     }
 
