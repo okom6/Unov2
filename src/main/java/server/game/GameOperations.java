@@ -18,7 +18,8 @@ public class GameOperations {
     }
 
     public void sendGameStateToAllPlayers(ArrayList<PlayerDeck> playerDeckArrayList, ArrayList<Card> stack, int playerTurn, GameInfo gameInfo){
-        PlayerGameStateToSend playerGameStateToSend = new PlayerGameStateToSend(stack.get(stack.size() - 1), gameInfo.getDeclaratedColour(), gameInfo.isStopBattle());
+        PlayerGameStateToSend playerGameStateToSend = new PlayerGameStateToSend(
+                stack.get(stack.size() - 1), gameInfo.getDeclaratedColour(), gameInfo.isStopBattle(), gameInfo.isEndGame());
         playerGameStateToSend.setPlayerTurn(playerTurn);
 
         for(int i = 0; i < playerDeckArrayList.size(); ++i){
@@ -26,8 +27,17 @@ public class GameOperations {
         }
 
         for(int i = 0; i < playerDeckArrayList.size(); ++i){
-            playerGameStateToSend.setPlayerNumber(i + 1);
+            playerGameStateToSend.setPlayerNumber(i);
             playerGameStateToSend.setHandDeck(playerDeckArrayList.get(i).getHandDeck());
+            playerDeckArrayList.get(i).getPlayer().getPlayerConnector().sendObjectToPlayer(playerGameStateToSend);
+        }
+    }
+
+    public void sendEndGameToAllPlayers(ArrayList<PlayerDeck> playerDeckArrayList, GameInfo gameInfo){
+        PlayerGameStateToSend playerGameStateToSend = new PlayerGameStateToSend(
+                null, gameInfo.getDeclaratedColour(), gameInfo.isStopBattle(), gameInfo.isEndGame());
+
+        for(int i = 0; i < playerDeckArrayList.size(); ++i){
             playerDeckArrayList.get(i).getPlayer().getPlayerConnector().sendObjectToPlayer(playerGameStateToSend);
         }
     }

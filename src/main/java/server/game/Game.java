@@ -85,8 +85,10 @@ public class Game {
                     (gameOperations.checkNumberOfActivePlayers(playerDeckArrayList) > 1) ? false: true );
         }
 
+        gameOperations.sendEndGameToAllPlayers(playerDeckArrayList, gameInfo);
+
         for (PlayerDeck pd: playerDeckArrayList) {
-            pd.getPlayer().getPlayerConnector().sendInfoToPlayer("end");
+            //pd.getPlayer().getPlayerConnector().sendInfoToPlayer("end");
             pd.getPlayer().getPlayerConnector().sendInfoToPlayer("Miejsce: " + Integer.toString(pd.getPlayer().getPlace()));
             pd.getPlayer().disconnect();
         }
