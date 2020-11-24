@@ -26,9 +26,7 @@ public class ClientGame {
             }
         }
 
-        String placeInfo = clientGameOperations.recivePlaceInfo(connectionToServer);
-
-        clientGameOperations.showSummaryInfo(placeInfo);
+        clientGameOperations.showSummaryInfo(clientGameOperations.recivePlaceInfo(connectionToServer));
 
         connectionToServer.stopConnection();
     }

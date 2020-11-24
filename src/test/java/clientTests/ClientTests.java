@@ -1,3 +1,5 @@
+package clientTests;
+
 import static org.mockito.Mockito.mock;
 
 public class ClientTests {
