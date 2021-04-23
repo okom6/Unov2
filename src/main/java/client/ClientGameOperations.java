@@ -15,12 +15,13 @@ public class ClientGameOperations {
     }
 
     public void showGameInfo(PlayerGameStateToSend gameInfo){
+        System.out.println();
         System.out.println("Is stop battle: " + Boolean.toString(gameInfo.isStopBattle()));
         System.out.println("Card on top: " + gameInfo.getCardOnTop().getColour() + " " + gameInfo.getCardOnTop().getCharacter());
         if(gameInfo.getPlayerNumber() == gameInfo.isPlayerTurn()){
             System.out.println("It is your turn");
         } else{
-            System.out.println("It is " + Integer.toString(gameInfo.isPlayerTurn()) + " player turn");
+            System.out.println("It is " + Integer.toString(gameInfo.isPlayerTurn() + 1) + " player turn");
         }
         if(gameInfo.getCardOnTop().getColour() == 'c'){ System.out.println("Declarated colour: " + gameInfo.getDeclaratedColour());}
         System.out.println();
@@ -38,16 +39,20 @@ public class ClientGameOperations {
         }
     }
 
-    public void showSummaryInfo(String placeInfo){
-        System.out.println(placeInfo);
+    public void showSummaryInfo(String placeInfo) {
+        if (placeInfo.equals("-1")) {
+            System.out.println("Jesteś ostatni. Przegrałeś!");
+        } else{
+            System.out.println("Miejsce" + placeInfo);
+        }
     }
 
     public boolean turnVerify(PlayerGameStateToSend gameInfo){
         return gameInfo.getPlayerNumber() == gameInfo.isPlayerTurn();
     }
 
-    public int playerInteraction(){
+    public String playerInteraction(){
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        return scanner.nextLine();
     }
 }

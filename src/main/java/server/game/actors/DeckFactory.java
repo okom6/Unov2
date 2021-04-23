@@ -12,7 +12,7 @@ public class DeckFactory {
         deck.addAll(produceCardsWithOneColor('g'));
         deck.addAll(produceCardsWithOneColor('b'));
         deck.addAll(produceCardsWithOneColor('y'));
-        deck.addAll(produceBlackCards());
+        //deck.addAll(produceBlackCards());
         Collections.shuffle(deck);
         return deck;
     }
@@ -32,7 +32,7 @@ public class DeckFactory {
             cardsWithOneColour.add(new Card(colour, '9'));
             cardsWithOneColour.add(new Card(colour, 's'));
             cardsWithOneColour.add(new Card(colour, 't'));
-            cardsWithOneColour.add(new Card(colour, 'g'));
+            //cardsWithOneColour.add(new Card(colour, 'g'));
         }
         return cardsWithOneColour;
     }

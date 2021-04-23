@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class GameOperations {
     public void addFirstCardToStack(ArrayList<Card> stack, ArrayList<Card> deck){
         for(int i = 0; i < deck.size(); i++){
-            if(deck.get(i).getColour() != 'b'){
+            if(deck.get(i).getColour() != 's'){
                 stack.add(deck.remove(i));
                 return;
             }
@@ -20,6 +20,8 @@ public class GameOperations {
     public void sendGameStateToAllPlayers(ArrayList<PlayerDeck> playerDeckArrayList, ArrayList<Card> stack, int playerTurn, GameInfo gameInfo){
         PlayerGameStateToSend playerGameStateToSend = new PlayerGameStateToSend(
                 stack.get(stack.size() - 1), gameInfo.getDeclaratedColour(), gameInfo.isStopBattle(), gameInfo.isEndGame());
+        System.out.println("Card on top 2:" + stack.get(stack.size() - 1).getColour() + "-" + stack.get(stack.size() - 1).getCharacter());
+
         playerGameStateToSend.setPlayerTurn(playerTurn);
 
         for(int i = 0; i < playerDeckArrayList.size(); ++i){
@@ -69,23 +71,27 @@ public class GameOperations {
         Card choosenCard = actualPlayerTurn.getHandDeck().get(responseNumber);
         Card cardOnTop = stack.get(stack.size() - 1);
 
-        if(gameInfo.isStopBattle() && choosenCard.getCharacter() == 's'){
+        /*if(gameInfo.isStopBattle() && choosenCard.getCharacter() == 's'){
             return true;
+        }*/
+
+        if(gameInfo.isStopBattle()){
+            return choosenCard.getCharacter() == 's';
         }
 
         //kładzenie
-        if(cardOnTop.getColour() == 'b' && cardOnTop.getCharacter() == 'c'){
+        if(cardOnTop.getColour() == 's' && cardOnTop.getCharacter() == 'c'){
             if((gameInfo.getDeclaratedColour() == choosenCard.getColour())
-                    || choosenCard.getColour() == 'b'){
+                    || choosenCard.getColour() == 's'){
                 return true;
             }
-        } else if((cardOnTop.getColour() == 'b' && cardOnTop.getCharacter() == '4')
-                && (choosenCard.getColour() == 'b' && choosenCard.getCharacter() == '4')){
+        } else if((cardOnTop.getColour() == 's' && cardOnTop.getCharacter() == '4')
+                && (choosenCard.getColour() == 's' && choosenCard.getCharacter() == '4')){
             return true;
         }
 
-        //wybrano czarnąkartę, a na stosie jest kolor
-        if(choosenCard.getColour() == 'b'){
+        //wybrano czarną kartę, a na stosie jest kolor
+        if(choosenCard.getColour() == 's'){
             return true;
         }
         //dodać obsługę "walki o stop"
@@ -115,7 +121,7 @@ public class GameOperations {
         if(action == 't'){
             if(gameInfo.isStopBattle()){
                 gameInfo.setStopBattle(false);
-            } else if(cardOnTop.getColour() == 'b' && cardOnTop.getCharacter() == '4'){
+            } else if(cardOnTop.getColour() == 's' && cardOnTop.getCharacter() == '4'){
                 takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 4);
             } else if(cardOnTop.getCharacter() == 'g'){
                 takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 2);
@@ -128,7 +134,7 @@ public class GameOperations {
         Card choosenCard = actualPlayerTurn.getHandDeck().remove(responseNumber);
         stack.add(choosenCard);
 
-        if(choosenCard.getColour() == 'b'){
+        if(choosenCard.getColour() == 's'){
             gameInfo.setDeclaratedColour(colourRequest);
         } else if(choosenCard.getCharacter() == 's'){
             gameInfo.setStopBattle(true);

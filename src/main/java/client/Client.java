@@ -39,3 +39,8 @@ public class Client {
         //connectionToServer.stopConnection();
     }
 }
+/*
+- złe pobieranie danych od gracza poprzez skanner
+- dodanie try-catch gdyby serwer stracił połączenie,
+    ustalenie miejsca wyrzuconemu graczowi
+ */

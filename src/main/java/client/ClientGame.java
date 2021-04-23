@@ -8,23 +8,34 @@ public class ClientGame {
     public void startGame(ConnectionToServer connectionToServer){
         ClientGameOperations clientGameOperations = new ClientGameOperations();
 
+        /*walidacja połączenia (jest po stronie serwera)*/
+        connectionToServer.sendMessage(Integer.toString(Integer.parseInt(connectionToServer.reciveMessage()) + 1));
+        connectionToServer.sendMessage("2"); //wybór pokoju
+
         PlayerGameStateToSend gameInfo = clientGameOperations.reciveGameStatus(connectionToServer);
-        clientGameOperations.showGameInfo(gameInfo);
+        //clientGameOperations.showGameInfo(gameInfo);
 
         while(!gameInfo.isEndGame()){
-            gameInfo = clientGameOperations.reciveGameStatus(connectionToServer);
+            //gameInfo = clientGameOperations.reciveGameStatus(connectionToServer);
+
+            System.out.println();
+            System.out.println("Is end game: " + Boolean.toString(gameInfo.isEndGame()));
+
             clientGameOperations.showGameInfo(gameInfo);
 
             if(clientGameOperations.turnVerify(gameInfo)){
                 connectionToServer.sendMessage(
-                        Integer.toString(clientGameOperations.playerInteraction()));
+                        clientGameOperations.playerInteraction());
 
                 while(!connectionToServer.reciveMessage().equals("good")){
                     connectionToServer.sendMessage(
-                            Integer.toString(clientGameOperations.playerInteraction()));
+                            clientGameOperations.playerInteraction());
                 }
             }
+
+            gameInfo = clientGameOperations.reciveGameStatus(connectionToServer);
         }
+        System.out.println("Po grze");
 
         clientGameOperations.showSummaryInfo(clientGameOperations.recivePlaceInfo(connectionToServer));
 

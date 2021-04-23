@@ -32,6 +32,7 @@ public class Game {
             //jesli deck ma mniej niz 5 kart to zabrać karty ze stosu i dodać do decka
             if (deck.size() < 5){
                 while(stack.size() > 1){
+                    System.out.println("Jestem w pętli");
                     deck.add(stack.remove(0));
                 }
             }
@@ -42,6 +43,9 @@ public class Game {
             if(!actualPlayerTurn.getPlayer().isActive()){
                 continue;
             }
+
+            System.out.println("Size 2:" + Integer.toString(stack.size()));
+            System.out.println("Card on top 3:" + stack.get(stack.size() - 1).getColour() + "-" + stack.get(stack.size() - 1).getCharacter());
 
             //wysłać info graczowi że jest jego tura
             //wysłać graczowi wszystkie jego karty, ilość kart innych, kartę na stosie, a innym graczom ilość kart innych, kartę na stosie
@@ -69,13 +73,20 @@ public class Game {
             //obsługa walki o stop
             //jeśli dobrze wybrał to dodać kartę do stosu
             gameOperations.savePlayerMove(actualPlayerTurn, stack, deck, response, gameInfo);
+            System.out.println("Card on top 1:" + stack.get(stack.size() - 1).getColour() + "-" + stack.get(stack.size() - 1).getCharacter());
+            System.out.println("Size 1:" + Integer.toString(stack.size()));
+
 
             //sprawdzić czy gracz w tej chwili wygrał (jeśli wygrał to przydzielic mu miejce [pole place])
-            if(actualPlayerTurn.getHandDeck().size() == 1){
+            if(actualPlayerTurn.getHandDeck().size() == 0){
                 gameInfo.setWinnerCounter(gameInfo.getWinnerCounter() + 1);
                 actualPlayerTurn.getPlayer().setPlace(gameInfo.getWinnerCounter());
                 actualPlayerTurn.getPlayer().setActive(false);
+                System.out.println("Gracz wygrał!!!");
             }
+
+            System.out.println("Po sprawddzeniu zwyciezcy:");
+
 
             //zmiana gracza (i++) lub (i--)
             i += gameInfo.getGameMove();
@@ -85,11 +96,13 @@ public class Game {
                     (gameOperations.checkNumberOfActivePlayers(playerDeckArrayList) > 1) ? false: true );
         }
 
+        System.out.println("Po grze");
+
         gameOperations.sendEndGameToAllPlayers(playerDeckArrayList, gameInfo);
 
         for (PlayerDeck pd: playerDeckArrayList) {
             //pd.getPlayer().getPlayerConnector().sendInfoToPlayer("end");
-            pd.getPlayer().getPlayerConnector().sendInfoToPlayer("Miejsce: " + Integer.toString(pd.getPlayer().getPlace()));
+            pd.getPlayer().getPlayerConnector().sendInfoToPlayer(Integer.toString(pd.getPlayer().getPlace()));
             pd.getPlayer().disconnect();
         }
     }
