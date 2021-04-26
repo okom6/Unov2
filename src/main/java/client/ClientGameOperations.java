@@ -16,6 +16,7 @@ public class ClientGameOperations {
 
     public void showGameInfo(PlayerGameStateToSend gameInfo){
         System.out.println();
+        System.out.println("Is take battle: " + Boolean.toString(gameInfo.isTakeBattle()));
         System.out.println("Is stop battle: " + Boolean.toString(gameInfo.isStopBattle()));
         System.out.println("Card on top: " + gameInfo.getCardOnTop().getColour() + " " + gameInfo.getCardOnTop().getCharacter());
         if(gameInfo.getPlayerNumber() == gameInfo.isPlayerTurn()){
@@ -43,7 +44,7 @@ public class ClientGameOperations {
         if (placeInfo.equals("-1")) {
             System.out.println("Jesteś ostatni. Przegrałeś!");
         } else{
-            System.out.println("Miejsce" + placeInfo);
+            System.out.println("Miejsce " + placeInfo);
         }
     }
 

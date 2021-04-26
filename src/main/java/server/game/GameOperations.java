@@ -19,7 +19,7 @@ public class GameOperations {
 
     public void sendGameStateToAllPlayers(ArrayList<PlayerDeck> playerDeckArrayList, ArrayList<Card> stack, int playerTurn, GameInfo gameInfo){
         PlayerGameStateToSend playerGameStateToSend = new PlayerGameStateToSend(
-                stack.get(stack.size() - 1), gameInfo.getDeclaratedColour(), gameInfo.isStopBattle(), gameInfo.isEndGame());
+                stack.get(stack.size() - 1), gameInfo.getDeclaratedColour(), gameInfo.isStopBattle(), gameInfo.isTakeBattle(), gameInfo.isEndGame());
         System.out.println("Card on top 2:" + stack.get(stack.size() - 1).getColour() + "-" + stack.get(stack.size() - 1).getCharacter());
 
         playerGameStateToSend.setPlayerTurn(playerTurn);
@@ -37,7 +37,7 @@ public class GameOperations {
 
     public void sendEndGameToAllPlayers(ArrayList<PlayerDeck> playerDeckArrayList, GameInfo gameInfo){
         PlayerGameStateToSend playerGameStateToSend = new PlayerGameStateToSend(
-                null, gameInfo.getDeclaratedColour(), gameInfo.isStopBattle(), gameInfo.isEndGame());
+                null, gameInfo.getDeclaratedColour(), gameInfo.isStopBattle(), gameInfo.isTakeBattle(), gameInfo.isEndGame());
 
         for(int i = 0; i < playerDeckArrayList.size(); ++i){
             playerDeckArrayList.get(i).getPlayer().getPlayerConnector().sendObjectToPlayer(playerGameStateToSend);
@@ -77,6 +77,17 @@ public class GameOperations {
 
         if(gameInfo.isStopBattle()){
             return choosenCard.getCharacter() == 's';
+        }
+
+        if(gameInfo.isTakeBattle()){
+            if(cardOnTop.getCharacter() == 'g'){
+                if(choosenCard.getCharacter() == 'g' || choosenCard.getCharacter() == '4'){
+                    return true;
+                }
+            }
+            if(cardOnTop.getCharacter() == '4' && choosenCard.getCharacter() == '4'){
+                return true;
+            }
         }
 
         //kładzenie
@@ -121,10 +132,12 @@ public class GameOperations {
         if(action == 't'){
             if(gameInfo.isStopBattle()){
                 gameInfo.setStopBattle(false);
-            } else if(cardOnTop.getColour() == 's' && cardOnTop.getCharacter() == '4'){
+            } else if(gameInfo.isTakeBattle() && cardOnTop.getColour() == 's' && cardOnTop.getCharacter() == '4'){
                 takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 4);
-            } else if(cardOnTop.getCharacter() == 'g'){
+                gameInfo.setTakeBattle(false);
+            } else if(gameInfo.isTakeBattle() && cardOnTop.getCharacter() == 'g'){
                 takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 2);
+                gameInfo.setTakeBattle(false);
             } else{
                 takeCardsFromMainDeckToPlayer(actualPlayerTurn, deck, 1);
             }
@@ -136,6 +149,11 @@ public class GameOperations {
 
         if(choosenCard.getColour() == 's'){
             gameInfo.setDeclaratedColour(colourRequest);
+            if(choosenCard.getCharacter() == '4'){
+                gameInfo.setTakeBattle(true);
+            }
+        } else if(choosenCard.getCharacter() == 'g'){
+            gameInfo.setTakeBattle(true);
         } else if(choosenCard.getCharacter() == 's'){
             gameInfo.setStopBattle(true);
         } else if(choosenCard.getCharacter() == 't'){

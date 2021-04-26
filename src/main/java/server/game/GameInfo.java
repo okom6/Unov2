@@ -5,14 +5,24 @@ public class GameInfo {
     private int winnerCounter;
     private char declaratedColour;
     private boolean stopBattle;
+    private boolean takeBattle;
     private int gameMove;
 
-    public GameInfo(boolean endGame, int winnerCounter, char declaratedColour, boolean stopBattle, int gameMove) {
+    public GameInfo(boolean endGame, int winnerCounter, char declaratedColour, boolean stopBattle, boolean takeBattle, int gameMove) {
         this.endGame = endGame;
         this.winnerCounter = winnerCounter;
         this.declaratedColour = declaratedColour;
         this.stopBattle = stopBattle;
+        this.takeBattle = takeBattle;
         this.gameMove = gameMove;
+    }
+
+    public boolean isTakeBattle() {
+        return takeBattle;
+    }
+
+    public void setTakeBattle(boolean takeBattle) {
+        this.takeBattle = takeBattle;
     }
 
     public boolean isEndGame() {

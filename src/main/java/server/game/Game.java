@@ -16,7 +16,7 @@ public class Game {
         ArrayList<Card> stack = new ArrayList<>();
         gameOperations.addFirstCardToStack(stack, deck); //dodać weryfikacje czy aby pierwsza karta nie jest czarna, jeśli tak to wybrac nową
         GameInfo gameInfo = new GameInfo(
-                false, 0, stack.get(0).getColour(), false, 1);
+                false, 0, stack.get(0).getColour(), false, false, 1);
 
         /*boolean endGame = false;
         int winnerCounter = 0;

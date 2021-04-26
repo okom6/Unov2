@@ -32,7 +32,7 @@ public class DeckFactory {
             cardsWithOneColour.add(new Card(colour, '9'));
             cardsWithOneColour.add(new Card(colour, 's'));
             cardsWithOneColour.add(new Card(colour, 't'));
-            //cardsWithOneColour.add(new Card(colour, 'g'));
+            cardsWithOneColour.add(new Card(colour, 'g'));
         }
         return cardsWithOneColour;
     }

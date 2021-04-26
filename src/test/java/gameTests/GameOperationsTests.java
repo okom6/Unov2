@@ -44,7 +44,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         ArrayList<Card> stack = new ArrayList<>();
         ArrayList<Card> deck = new ArrayList<>();
-        deck.add(new Card('b', '4'));
+        deck.add(new Card('s', '4'));
         deck.add(new Card('g', '0'));
         gameOperations.addFirstCardToStack(stack, deck);
         assertEquals(1, stack.size());
@@ -102,7 +102,7 @@ public class GameOperationsTests{
     @Test
     public void checkRulesWhenPlayerTakeSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
         playerDeck.getHandDeck().add(new Card('b', '0'));
@@ -117,7 +117,7 @@ public class GameOperationsTests{
     @Test
     public void checkRulesWhenPlayerPutStopInStopBattleSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', true, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', true, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
         playerDeck.getHandDeck().add(new Card('b', 's'));
@@ -132,17 +132,17 @@ public class GameOperationsTests{
     @Test
     public void checkRulesWhenBlackCardOnTopSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
-        playerDeck.getHandDeck().add(new Card('b', 'c'));
+        playerDeck.getHandDeck().add(new Card('s', 'c'));
         playerDeck.getHandDeck().add(new Card('r', '0'));
 
         ArrayList<Card> stack = new ArrayList<>();
-        stack.add(new Card('b', 'c'));
+        stack.add(new Card('s', 'c'));
 
         assertEquals(true, gameOperations.checkRules(
-                playerDeck, stack, "p-0-b", gameInfo));
+                playerDeck, stack, "p-0-s", gameInfo));
         assertEquals(true, gameOperations.checkRules(
                 playerDeck, stack, "p-1-N", gameInfo));
     }
@@ -150,7 +150,7 @@ public class GameOperationsTests{
     @Test
     public void checkRulesWhenBlackCardOnTopAndTakeSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
         playerDeck.getHandDeck().add(new Card('b', '4'));
@@ -165,22 +165,22 @@ public class GameOperationsTests{
     @Test
     public void checkRulesWhenColourCardOnTopAndBlackChoosenSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
-        playerDeck.getHandDeck().add(new Card('b', 'c'));
+        playerDeck.getHandDeck().add(new Card('s', 'c'));
 
         ArrayList<Card> stack = new ArrayList<>();
         stack.add(new Card('r', '4'));
 
         assertEquals(true, gameOperations.checkRules(
-                playerDeck, stack, "p-0-b", gameInfo));
+                playerDeck, stack, "p-0-s", gameInfo));
     }
 
     @Test
     public void checkRulesWhenColourCardOnTopAndColourChoosenSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
         playerDeck.getHandDeck().add(new Card('g', '4'));
@@ -198,7 +198,7 @@ public class GameOperationsTests{
     @Test
     public void checkRulesFailSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
         playerDeck.getHandDeck().add(new Card('g', '9'));
@@ -213,7 +213,7 @@ public class GameOperationsTests{
     @Test
     public void savePlayerMoveWhenIsStopAndPlayerTkeSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', true, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', true, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
@@ -234,14 +234,14 @@ public class GameOperationsTests{
     @Test
     public void savePlayerMoveWhenTake4CardsSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, true, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
         playerDeck.getHandDeck().add(new Card('g', '9'));
 
         ArrayList<Card> stack = new ArrayList<>();
-        stack.add(new Card('b', '4'));
+        stack.add(new Card('s', '4'));
 
         ArrayList<Card> deck = new ArrayList<>();
         deck.add(new Card('r', '5'));
@@ -259,7 +259,7 @@ public class GameOperationsTests{
     @Test
     public void savePlayerMoveWhenTake2CardsSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, true, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
@@ -284,7 +284,7 @@ public class GameOperationsTests{
     @Test
     public void savePlayerMoveWhenTake1CardsSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
@@ -309,7 +309,7 @@ public class GameOperationsTests{
     @Test
     public void savePlayerMoveWhenHePutBlackCardSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
@@ -332,7 +332,7 @@ public class GameOperationsTests{
     @Test
     public void savePlayerMoveWhenHePutStopCardSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
@@ -355,7 +355,7 @@ public class GameOperationsTests{
     @Test
     public void savePlayerMoveWhenHePutTwistCardSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));
@@ -378,7 +378,7 @@ public class GameOperationsTests{
     @Test
     public void savePlayerMoveWhenHePutNormalCardSuccessfull(){
         GameOperations gameOperations = new GameOperations();
-        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, 1);
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
                 new PlayerConnector(null, null, null)));

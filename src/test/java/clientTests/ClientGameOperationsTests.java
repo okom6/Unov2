@@ -29,6 +29,7 @@ public class ClientGameOperationsTests {
                 new Card('b', 'c'),
                 'r',
                 false,
+                false,
                 false
         );
 
@@ -62,6 +63,7 @@ public class ClientGameOperationsTests {
         PlayerGameStateToSend gameInfo = new PlayerGameStateToSend(
                 new Card('b', 'c'),
                 'r',
+                false,
                 false,
                 false
         );

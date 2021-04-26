@@ -11,12 +11,14 @@ public class PlayerGameStateToSend implements Serializable {
     private int playerTurn;
     private char declaratedColour;
     private boolean stopBattle;
+    private boolean takeBattle;
     private boolean endGame;
 
-    public PlayerGameStateToSend(Card cardOnTop, char declaratedColour, boolean stopBattle, boolean endGame) {
+    public PlayerGameStateToSend(Card cardOnTop, char declaratedColour, boolean stopBattle, boolean takeBattle, boolean endGame) {
         this.cardOnTop = cardOnTop;
         this.declaratedColour = declaratedColour;
         this.stopBattle = stopBattle;
+        this.takeBattle = takeBattle;
         this.endGame = endGame;
     }
 
@@ -42,6 +44,10 @@ public class PlayerGameStateToSend implements Serializable {
 
     public boolean isStopBattle() {
         return stopBattle;
+    }
+
+    public boolean isTakeBattle() {
+        return takeBattle;
     }
 
     public boolean isEndGame() {
