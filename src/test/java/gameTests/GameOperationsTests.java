@@ -211,6 +211,36 @@ public class GameOperationsTests{
     }
 
     @Test
+    public void checkRulesWhenIsTakeBattleWithNormalGetCardOnTopSuccessfull(){
+        GameOperations gameOperations = new GameOperations();
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, true, 1);
+        PlayerDeck playerDeck = new PlayerDeck(new Player("1",
+                new PlayerConnector(null, null, null)));
+        playerDeck.getHandDeck().add(new Card('g', 'g'));
+
+        ArrayList<Card> stack = new ArrayList<>();
+        stack.add(new Card('r', 'g'));
+
+        assertEquals(true, gameOperations.checkRules(
+                playerDeck, stack, "p-0-b", gameInfo));
+    }
+
+    @Test
+    public void checkRulesWhenIsTakeBattleWithSpecialCardOnTopSuccessfull(){
+        GameOperations gameOperations = new GameOperations();
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, true, 1);
+        PlayerDeck playerDeck = new PlayerDeck(new Player("1",
+                new PlayerConnector(null, null, null)));
+        playerDeck.getHandDeck().add(new Card('s', '4'));
+
+        ArrayList<Card> stack = new ArrayList<>();
+        stack.add(new Card('s', '4'));
+
+        assertEquals(true, gameOperations.checkRules(
+                playerDeck, stack, "p-0-b", gameInfo));
+    }
+
+    @Test
     public void savePlayerMoveWhenIsStopAndPlayerTkeSuccessfull(){
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', true, false, 1);
@@ -395,5 +425,52 @@ public class GameOperationsTests{
 
         assertEquals(0, playerDeck.getHandDeck().size());
         assertEquals(2, stack.size());
+    }
+
+    @Test
+    public void enableTakeBattleWithSpecialCardSuccessfull(){
+        GameOperations gameOperations = new GameOperations();
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
+
+        PlayerDeck playerDeck = new PlayerDeck(new Player("1",
+                new PlayerConnector(null, null, null)));
+        playerDeck.getHandDeck().add(new Card('s', '4'));
+
+        ArrayList<Card> stack = new ArrayList<>();
+        stack.add(new Card('r', 't'));
+
+        ArrayList<Card> deck = new ArrayList<>();
+        deck.add(new Card('r', '5'));
+
+        gameOperations.savePlayerMove(
+                playerDeck, stack, deck, "p-0-g", gameInfo);
+
+        assertEquals(0, playerDeck.getHandDeck().size());
+        assertEquals(2, stack.size());
+        assertEquals(true, gameInfo.isTakeBattle());
+        assertEquals('g', gameInfo.getDeclaratedColour());
+    }
+
+    @Test
+    public void enableTakeBattleWithNormalCardGetSuccessfull(){
+        GameOperations gameOperations = new GameOperations();
+        GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
+
+        PlayerDeck playerDeck = new PlayerDeck(new Player("1",
+                new PlayerConnector(null, null, null)));
+        playerDeck.getHandDeck().add(new Card('r', 'g'));
+
+        ArrayList<Card> stack = new ArrayList<>();
+        stack.add(new Card('r', 't'));
+
+        ArrayList<Card> deck = new ArrayList<>();
+        deck.add(new Card('r', '5'));
+
+        gameOperations.savePlayerMove(
+                playerDeck, stack, deck, "p-0-r", gameInfo);
+
+        assertEquals(0, playerDeck.getHandDeck().size());
+        assertEquals(2, stack.size());
+        assertEquals(true, gameInfo.isTakeBattle());
     }
 }

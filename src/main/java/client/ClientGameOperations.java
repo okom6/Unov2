@@ -24,7 +24,7 @@ public class ClientGameOperations {
         } else{
             System.out.println("It is " + Integer.toString(gameInfo.isPlayerTurn() + 1) + " player turn");
         }
-        if(gameInfo.getCardOnTop().getColour() == 'c'){ System.out.println("Declarated colour: " + gameInfo.getDeclaratedColour());}
+        if(gameInfo.getCardOnTop().getColour() == 's'){ System.out.println("Declarated colour: " + gameInfo.getDeclaratedColour());}
         System.out.println();
         for (int i = 0; i < gameInfo.getPlayersCardNumbers().size(); ++i) {
             if(gameInfo.getPlayerNumber() == i){

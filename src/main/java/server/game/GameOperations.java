@@ -91,14 +91,11 @@ public class GameOperations {
         }
 
         //kładzenie
-        if(cardOnTop.getColour() == 's' && cardOnTop.getCharacter() == 'c'){
+        if(cardOnTop.getColour() == 's'){
             if((gameInfo.getDeclaratedColour() == choosenCard.getColour())
                     || choosenCard.getColour() == 's'){
                 return true;
             }
-        } else if((cardOnTop.getColour() == 's' && cardOnTop.getCharacter() == '4')
-                && (choosenCard.getColour() == 's' && choosenCard.getCharacter() == '4')){
-            return true;
         }
 
         //wybrano czarną kartę, a na stosie jest kolor
