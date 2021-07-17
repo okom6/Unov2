@@ -1,6 +1,5 @@
 package client;
 
-import server.game.GameInfo;
 import server.game.actors.PlayerGameStateToSend;
 
 public class ClientGame {
@@ -8,15 +7,12 @@ public class ClientGame {
     public void startGame(ConnectionToServer connectionToServer){
         ClientGameOperations clientGameOperations = new ClientGameOperations();
 
-        /*walidacja połączenia (jest po stronie serwera)*/
         connectionToServer.sendMessage(Integer.toString(Integer.parseInt(connectionToServer.reciveMessage()) + 1));
-        connectionToServer.sendMessage("2"); //wybór pokoju
+        connectionToServer.sendMessage("2");
 
         PlayerGameStateToSend gameInfo = clientGameOperations.reciveGameStatus(connectionToServer);
-        //clientGameOperations.showGameInfo(gameInfo);
 
         while(!gameInfo.isEndGame()){
-            //gameInfo = clientGameOperations.reciveGameStatus(connectionToServer);
 
             System.out.println();
             System.out.println("Is end game: " + Boolean.toString(gameInfo.isEndGame()));

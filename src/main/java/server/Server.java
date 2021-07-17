@@ -54,7 +54,6 @@ public class Server {
                                 ThreadLocalRandom.current().nextInt(1, 9999999 + 1)),
                         playerConnector
                 ), Integer.parseInt(playerConnector.getInfoFromPlayer()));
-                //), 1);
 
             } catch (IOException e) {
                 e.printStackTrace();

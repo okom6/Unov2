@@ -4,7 +4,6 @@ import server.actors.Player;
 import server.actors.Table;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Croupier {
     public ArrayList<PlayerDeck> deal(Table table, ArrayList<Card> deck){
