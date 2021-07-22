@@ -1,5 +1,6 @@
 package server;
 
+import error.ErrorCode;
 import server.game.actors.PlayerGameStateToSend;
 
 import java.io.*;
@@ -34,6 +35,16 @@ public class PlayerConnector {
             OutputStream outputStream = clientSocket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(playerGameStateToSend);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendErrorCodeToPlayer(ErrorCode errorCode){
+        try {
+            OutputStream outputStream = clientSocket.getOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(errorCode);
         } catch (IOException e) {
             e.printStackTrace();
         }

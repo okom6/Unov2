@@ -1,5 +1,6 @@
 package client;
 
+import error.ErrorCode;
 import server.game.GameInfo;
 import server.game.actors.PlayerGameStateToSend;
 
@@ -27,10 +28,14 @@ public class ClientGame {
                 connectionToServer.sendMessage(
                         clientGameOperations.playerInteraction());
 
-                while(!connectionToServer.reciveMessage().equals("good")){
+                ErrorCode info = connectionToServer.reciveErrorCode();
+                while(info.getCode() != 0){
+                    System.out.println(info.getInfo());
                     connectionToServer.sendMessage(
                             clientGameOperations.playerInteraction());
+                    info = connectionToServer.reciveErrorCode();
                 }
+                System.out.println(info.getInfo());
             }
 
             gameInfo = clientGameOperations.reciveGameStatus(connectionToServer);
