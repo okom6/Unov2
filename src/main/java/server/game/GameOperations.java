@@ -1,9 +1,6 @@
 package server.game;
 
-import error.ErrorCode;
-import error.GoodMoveCode;
-import error.NoChoosenColourErrorCode;
-import error.WrongCardErrorCode;
+import error.*;
 import server.actors.Table;
 import server.game.actors.Card;
 import server.game.actors.PlayerDeck;
@@ -69,30 +66,30 @@ public class GameOperations {
         //dobieranie
         //jeśli masz akcję walki o stop to nie możesz dobierać ale dobranie oznacza poddanie się w walce
         if(action == 't'){
-            return new GoodMoveCode();
+            return ErrorCodeFactory.produceGoodMoveCode();
         }
 
         Card choosenCard = actualPlayerTurn.getHandDeck().get(responseNumber);
         Card cardOnTop = stack.get(stack.size() - 1);
 
         if(gameInfo.isStopBattle() && choosenCard.getCharacter() == 's'){
-            return new GoodMoveCode();
+            return ErrorCodeFactory.produceGoodMoveCode();
         }
 
         if(gameInfo.isTakeBattle()){
             if(cardOnTop.getCharacter() == 'g'){
                 if(choosenCard.getCharacter() == 'g' || choosenCard.getCharacter() == '4'){
                     if(choosenCard.getColour() == 's' && colourRequest == '*'){
-                        return new NoChoosenColourErrorCode();
+                        return ErrorCodeFactory.produceNoChoosenColourErrorCode();
                     }
-                    return new GoodMoveCode();
+                    return ErrorCodeFactory.produceGoodMoveCode();
                 }
             }
             if(cardOnTop.getCharacter() == '4' && choosenCard.getCharacter() == '4'){
                 if(colourRequest == '*'){
-                    return new NoChoosenColourErrorCode();
+                    return ErrorCodeFactory.produceNoChoosenColourErrorCode();
                 }
-                return new GoodMoveCode();
+                return ErrorCodeFactory.produceGoodMoveCode();
             }
         }
 
@@ -101,26 +98,26 @@ public class GameOperations {
             if((gameInfo.getDeclaratedColour() == choosenCard.getColour())
                     || choosenCard.getColour() == 's'){
                 if(choosenCard.getColour() == 's' && colourRequest == '*'){
-                    return new NoChoosenColourErrorCode();
+                    return ErrorCodeFactory.produceNoChoosenColourErrorCode();
                 }
-                return new GoodMoveCode();
+                return ErrorCodeFactory.produceGoodMoveCode();
             }
         }
 
         //wybrano czarną kartę, a na stosie jest kolor
         if(choosenCard.getColour() == 's'){
             if(colourRequest == '*'){
-                return new NoChoosenColourErrorCode();
+                return ErrorCodeFactory.produceNoChoosenColourErrorCode();
             }
-            return new GoodMoveCode();
+            return ErrorCodeFactory.produceGoodMoveCode();
         }
         //dodać obsługę "walki o stop"
         //masz w ręku kolor lub czarna kartę
         if(cardOnTop.getColour() == choosenCard.getColour() || cardOnTop.getCharacter() == choosenCard.getCharacter()){
-            return new GoodMoveCode();
+            return ErrorCodeFactory.produceGoodMoveCode();
         }
 
-        return new WrongCardErrorCode();
+        return ErrorCodeFactory.produceWrongCardErrorCode();
     }
 
     public void savePlayerMove(PlayerDeck actualPlayerTurn, ArrayList<Card> stack, ArrayList<Card> deck, String response, GameInfo gameInfo){
