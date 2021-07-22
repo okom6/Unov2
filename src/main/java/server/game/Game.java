@@ -1,6 +1,8 @@
 package server.game;
 
-import server.actors.Player;
+import error.ErrorCode;
+import error.NoChoosenColourErrorCode;
+import error.WrongCardErrorCode;
 import server.actors.Table;
 import server.game.actors.*;
 
@@ -55,18 +57,20 @@ public class Game {
             String response = actualPlayerTurn.getPlayer().getPlayerConnector().getInfoFromPlayer();
             //int responseNumberumber = Integer.parseInt(response.split("-")[0]);
 
-            //jeśli źle wybrał to ponowić proźbę o wybranie
-            while(!gameOperations.checkRules(actualPlayerTurn, stack, response, gameInfo)){
-                actualPlayerTurn.getPlayer().getPlayerConnector().sendInfoToPlayer("wrong");
+            ErrorCode info = gameOperations.checkRules(actualPlayerTurn, stack, response, gameInfo);
+
+            while (info.getCode() != 0){
+                actualPlayerTurn.getPlayer().getPlayerConnector().sendErrorCodeToPlayer(info);
                 response = actualPlayerTurn.getPlayer().getPlayerConnector().getInfoFromPlayer();
+                info = gameOperations.checkRules(actualPlayerTurn, stack, response, gameInfo);
             }
+            actualPlayerTurn.getPlayer().getPlayerConnector().sendErrorCodeToPlayer(info);
 
             //jeśli dobrał to sprawdzić kartę na stosie czy ma byc dobrane 1, 2 lub 4 karty
             //jeśli dobrał to sprawdzic czy dobrana karta pasuje i jeśli tak to położyć
             //obsluzyć zmiane koloru kartą specjalną
 
             //zweryfikować czy dobrze wybrał i przesłać odpowiedź
-            actualPlayerTurn.getPlayer().getPlayerConnector().sendInfoToPlayer("good");
 
             //nie zapomnieć o zmianie statusu declaratedColour
             //stworzyć dobieranie oparte o wartości karty na górze stosu

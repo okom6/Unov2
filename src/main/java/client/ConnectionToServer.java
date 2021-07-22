@@ -1,5 +1,6 @@
 package client;
 
+import error.ErrorCode;
 import server.game.actors.PlayerGameStateToSend;
 
 import java.io.*;
@@ -39,6 +40,19 @@ public class ConnectionToServer {
             InputStream inputStream = clientSocket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
             return (PlayerGameStateToSend) objectInputStream.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ErrorCode reciveErrorCode() {
+        try {
+            InputStream inputStream = clientSocket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            return (ErrorCode) objectInputStream.readObject();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
