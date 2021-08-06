@@ -1,10 +1,10 @@
 package server.game;
 
 import error.*;
-import server.actors.Table;
 import server.game.actors.Card;
 import server.game.actors.PlayerDeck;
 import server.game.actors.PlayerGameStateToSend;
+
 
 import java.util.ArrayList;
 
