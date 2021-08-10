@@ -53,7 +53,7 @@ public class RoomTests {
     public void addPlayerToTableSuccessfull(){
         Room room = Room.getInstance();
         room.makeRoomEmpty();
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         room.addTable(3);
         room.addPlayerToTable(player, 3);
         assertNotNull(player.getTable());
@@ -63,7 +63,7 @@ public class RoomTests {
     public void addPlayerToFullTablesSuccessfull(){
         Room room = Room.getInstance();
         room.makeRoomEmpty();
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         room.addPlayerToTable(player, 3);
         assertEquals(1, room.getTables().size());
         assertNotNull(player.getTable());
@@ -74,7 +74,7 @@ public class RoomTests {
         Room room = Room.getInstance();
         room.makeRoomEmpty();
         room.addTable(3);
-        room.addPlayer(new Player("1", new PlayerConnector(null, null, null)), 3);
+        room.addPlayer(new Player("1", new PlayerConnector(null)), 3);
         assertEquals(1, room.getPlayers().size());
     }
 
@@ -87,7 +87,7 @@ public class RoomTests {
         Socket clientSocket = mock(Socket.class);
         PrintWriter out = mock(PrintWriter.class);
         BufferedReader in = mock(BufferedReader.class);
-        Player player = new Player("1", new PlayerConnector(clientSocket, out, in));
+        Player player = new Player("1", new PlayerConnector(clientSocket));
         room.addTable(3);
         room.addPlayer(player, 3);
         room.removePlayer(player);

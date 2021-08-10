@@ -39,26 +39,19 @@ public class Server {
         }
 
         public void run() {
-            try {
-                PlayerConnector playerConnector = new PlayerConnector(clientSocket,
-                        new PrintWriter(clientSocket.getOutputStream(), true),
-                        new BufferedReader(new InputStreamReader(clientSocket.getInputStream())));
+            PlayerConnector playerConnector = new PlayerConnector(clientSocket);
 
-                if(!checkConnection(playerConnector)){
-                    playerConnector.closeConnection();
-                    return;
-                }
-
-                Room.getInstance().addPlayer(new Player(
-                        Integer.toString(Room.getInstance().getPlayers().size() +
-                                ThreadLocalRandom.current().nextInt(1, 9999999 + 1)),
-                        playerConnector
-                ), Integer.parseInt(playerConnector.getInfoFromPlayer()));
-                //), 1);
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(!checkConnection(playerConnector)){
+                playerConnector.closeConnection();
+                return;
             }
+
+            Room.getInstance().addPlayer(new Player(
+                    Integer.toString(Room.getInstance().getPlayers().size() +
+                            ThreadLocalRandom.current().nextInt(1, 9999999 + 1)),
+                    playerConnector
+            ), Integer.parseInt(playerConnector.getInfoFromPlayer()));
+            //), 1);
         }
 
         public boolean checkConnection(PlayerConnector playerConnector){

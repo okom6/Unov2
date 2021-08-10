@@ -1,11 +1,8 @@
-package client;
+package client.console;
 
-import server.game.actors.PlayerGameStateToSend;
+import client.ConnectionToServer;
 
-import java.io.*;
-import java.net.Socket;
-
-public class Client {
+public class Client2 {
 
     public static void main(String[] args){
         //Client client = new Client();
@@ -39,8 +36,3 @@ public class Client {
         //connectionToServer.stopConnection();
     }
 }
-/*
-- złe pobieranie danych od gracza poprzez skanner
-- dodanie try-catch gdyby serwer stracił połączenie,
-    ustalenie miejsca wyrzuconemu graczowi
- */

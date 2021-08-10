@@ -1,6 +1,8 @@
-package client;
+package client.console;
 
-public class Client2 {
+import client.ConnectionToServer;
+
+public class Client {
 
     public static void main(String[] args){
         //Client client = new Client();
@@ -34,3 +36,8 @@ public class Client2 {
         //connectionToServer.stopConnection();
     }
 }
+/*
+- złe pobieranie danych od gracza poprzez skanner
+- dodanie try-catch gdyby serwer stracił połączenie,
+    ustalenie miejsca wyrzuconemu graczowi
+ */

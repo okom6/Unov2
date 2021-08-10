@@ -24,14 +24,14 @@ public class TableTests {
     @Test
     public void addPlayerToTableSuccessfull(){
         Table table = new Table(3);
-        table.addPlayer(new Player("1", new PlayerConnector(null, null, null)));
+        table.addPlayer(new Player("1", new PlayerConnector(null)));
         assertEquals(1, table.getPlayersCounter());
     }
 
     @Test
     public void removePlayerFromTableSuccessfull(){
         Table table = new Table(3);
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         table.addPlayer(player);
         table.removePlayer(player);
         assertEquals(0, table.getPlayersCounter());
@@ -40,7 +40,7 @@ public class TableTests {
     @Test
     public void getPlayersSuccessfull(){
         Table table = new Table(3);
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         table.addPlayer(player);
         assertEquals(player, table.getPlayers().get(0));
     }

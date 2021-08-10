@@ -18,8 +18,8 @@ public class CroupierTests {
     @Test
     public void croupierDealSuccessfull(){
         Table table = new Table(2);
-        table.addPlayer(new Player("1", new PlayerConnector(null, null, null)));
-        table.addPlayer(new Player("2", new PlayerConnector(null, null, null)));
+        table.addPlayer(new Player("1", new PlayerConnector(null)));
+        table.addPlayer(new Player("2", new PlayerConnector(null)));
         DeckFactory deckFactory = new DeckFactory();
         ArrayList deck = deckFactory.produceShuffledDeck();
         Croupier croupier = new Croupier();

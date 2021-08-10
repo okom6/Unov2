@@ -1,20 +1,10 @@
 package clientTests;
 
-import client.ClientGameOperations;
-import client.ConnectionToServer;
+import client.console.ClientGameOperations;
 import org.junit.Test;
-import server.PlayerConnector;
-import server.actors.Player;
-import server.actors.Room;
-import server.game.GameInfo;
-import server.game.GameOperations;
 import server.game.actors.Card;
-import server.game.actors.PlayerDeck;
 import server.game.actors.PlayerGameStateToSend;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;

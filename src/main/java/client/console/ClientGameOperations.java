@@ -1,5 +1,6 @@
-package client;
+package client.console;
 
+import client.ConnectionToServer;
 import server.game.actors.Card;
 import server.game.actors.PlayerGameStateToSend;
 
@@ -54,6 +55,7 @@ public class ClientGameOperations {
 
     public String playerInteraction(){
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        String command = scanner.nextLine();
+        return command;
     }
 }

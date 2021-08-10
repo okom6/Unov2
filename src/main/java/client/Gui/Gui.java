@@ -1,8 +1,11 @@
 package client.Gui;
 
+import client.ConnectionToServer;
 import client.Gui.comandBuilder.CommandBuilderDirector;
 import client.Gui.comandBuilder.PutCommandBuilder;
 import client.Gui.comandBuilder.TakeCommandBuilder;
+import error.ErrorCode;
+import server.game.actors.Card;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +16,8 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class Gui extends JFrame {
+    private ClientGuiMediator clientGuiMediator;
+
     private ButtonGroup cardButtonsGroup = new ButtonGroup();
     private ArrayList<JToggleButton> cardsButtons = new ArrayList<>();
 
@@ -30,6 +35,7 @@ public class Gui extends JFrame {
 
     private JLabel errorCodeInfo = new JLabel();
     private JLabel gameBoardInfo = new JLabel();
+    private JLabel cardOnTopInfo = new JLabel();
 
     public Gui(){
         setTitle("UNO");
@@ -38,11 +44,17 @@ public class Gui extends JFrame {
         setLayout(null);
         setResizable(false);
 
-        initComponent();
+        initComponents();
         initEvent();
     }
 
-    private void initComponent(){
+    public void setClientGuiMediator(ClientGuiMediator clientGuiMediator) {
+        this.clientGuiMediator = clientGuiMediator;
+    }
+
+    private void initComponents(){
+        this.getContentPane().removeAll();
+
         sendButton.setBounds(1650,900,200,40);
         takeButton.setBounds(1650,850,200,40);
 
@@ -51,44 +63,24 @@ public class Gui extends JFrame {
 
         initColourButtons();
 
-        addTestButtons();
+        //
+        //addTestButtons();
+        //
         initCardButtons();
 
-        errorCodeInfo.setBounds(1550,200,250,40);
-        errorCodeInfo.setText("error code info");
-        add(errorCodeInfo);
 
-        gameBoardInfo.setBounds(750,450,250,40);
-        gameBoardInfo.setText("game board info");
-        add(gameBoardInfo);
+        initLabels();
 
-        addTestPlayersInfo();
+        //
+        //addTestPlayersInfo();
+        //
         initPlayersInfo();
+    }
 
-        /*putCardButton.setBounds(100,10,100,20);
-        takeCardButton.setBounds(100,35,100,20);
-
-
-        btnTutup.setBounds(300,130, 80,25);
-        btnTambah.setBounds(300,100, 80,25);
-
-        txtA.setBounds(100,10,100,20);
-        txtB.setBounds(100,35,100,20);
-        txtC.setBounds(100,65,100,20);
-
-        lblA.setBounds(20,10,100,20);
-        lblB.setBounds(20,35,100,20);
-        lblC.setBounds(20,65,100,20);*/
-
-        //txtA.setName();
-
-        /*add(lblA);
-        add(lblB);
-        add(lblC);
-
-        add(txtA);
-        add(txtB);
-        add(txtC);*/
+    public void repaintButtonsAndPlayerInfo(){
+        initCardButtons();
+        initPlayersInfo();
+        this.repaint();
     }
 
     private void initColourButtons(){
@@ -150,6 +142,20 @@ public class Gui extends JFrame {
         }
     }
 
+    private void initLabels(){
+        errorCodeInfo.setBounds(1550,200,250,40);
+        errorCodeInfo.setText("error code info");
+        add(errorCodeInfo);
+
+        gameBoardInfo.setBounds(860,450,250,40);
+        gameBoardInfo.setText("game board info");
+        add(gameBoardInfo);
+
+        cardOnTopInfo.setBounds(600,450,250,40);
+        cardOnTopInfo.setText("card on top");
+        add(cardOnTopInfo);
+    }
+
     private void initEvent(){
 
         this.addWindowListener(new WindowAdapter() {
@@ -172,22 +178,75 @@ public class Gui extends JFrame {
     }
 
     private void sendPutResponse(ActionEvent e){
-        CommandBuilderDirector commandBuilderDirector = new CommandBuilderDirector(new PutCommandBuilder());
-        System.out.println(commandBuilderDirector.createCommand(cardButtonsGroup, colourRequestButtonsGroup));
+        clientGuiMediator.sendMoveToServer(new CommandBuilderDirector(new PutCommandBuilder()),
+                cardButtonsGroup, colourRequestButtonsGroup);
         cardButtonsGroup.clearSelection();
         colourRequestButtonsGroup.clearSelection();
     }
 
     private void sendTakeResponse(ActionEvent e){
-        CommandBuilderDirector commandBuilderDirector = new CommandBuilderDirector(new TakeCommandBuilder());
-        System.out.println(commandBuilderDirector.createCommand(cardButtonsGroup, colourRequestButtonsGroup));
+        clientGuiMediator.sendMoveToServer(new CommandBuilderDirector(new TakeCommandBuilder()),
+                cardButtonsGroup, colourRequestButtonsGroup);
         cardButtonsGroup.clearSelection();
         colourRequestButtonsGroup.clearSelection();
+    }
+
+    public void updateButtons(ArrayList<Card> handDeck){
+        cardButtonsGroup = new ButtonGroup();
+        cardsButtons.clear();
+
+        for(int i = 0 ; i < handDeck.size(); i++){
+            JToggleButton button = new JToggleButton(
+                    handDeck.get(i).getCharacter() + "-" + handDeck.get(i).getColour());
+            button.setName(Integer.toString(i));
+            cardsButtons.add(button);
+            cardButtonsGroup.add(button);
+        }
+    }
+
+    public void updatePlayersInfo(ArrayList<Integer> playersCardNumbers, int playerNumber){
+        playersInfo.clear();
+
+        for(int i = 0 ; i < playersCardNumbers.size(); i++){
+            JLabel l = new JLabel();
+            if(i != playerNumber) {
+                l.setText("Player " + Integer.toString(i + 1) + "\n\n" +
+                        "Cards" + Integer.toString(playersCardNumbers.get(i)));
+            } else {
+                l.setText("You " + "\n\n" +
+                        "Cards" + Integer.toString(playersCardNumbers.get(i)));
+            }
+            l.setName(Integer.toString(i));
+            playersInfo.add(l);
+        }
+    }
+
+    public void updadeGameBoardInfo(Card cardOnTop, boolean stopBattle, boolean takeBattle,
+                                    boolean thisPlayerTurn, char declaratedColour, int playerTurn){
+        this.cardOnTopInfo.setText(cardOnTop.getCharacter() + "-" + cardOnTop.getColour());
+        this.gameBoardInfo.setText("Is stop battle: " + Boolean.toString(stopBattle)
+                + "\n" + "Is take battle: " + Boolean.toString(takeBattle)
+                + "\n" + ((thisPlayerTurn) ? "It is your turn" : "It is " + Integer.toString(playerTurn + 1)) + " player turn"
+                + ((cardOnTop.getColour() == 's') ? "\nDeclarated colour: " + declaratedColour : ""));
+        this.cardOnTopInfo.repaint();
+        this.gameBoardInfo.repaint();
+    }
+
+    public void updadeErrorCodeInfo(ErrorCode errorCode){
+        errorCodeInfo.setText(errorCode.getInfo());
+        errorCodeInfo.repaint();
     }
 
     public static void main(String[] args){
         Gui gui = new Gui();
         gui.setVisible(true);
+
+        /*ClientGame clientGame = new ClientGame();
+        clientGame.startGame(new ConnectionToServer("localhost", 7777));*/
+        GuiClientGame guiClientGame = new GuiClientGame(new ConnectionToServer("localhost", 7777));
+        ClientGuiMediator clientGuiMediator = new ClientGuiMediator(gui, guiClientGame);
+
+        guiClientGame.reciveMessagesAbautGameState();
     }
 
     private void addTestButtons(){

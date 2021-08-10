@@ -13,34 +13,34 @@ public class PlayerTests {
 
     @Test
     public void createdPlayerSuccessfull(){
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         assertEquals("1", player.getHashID());
     }
 
     @Test
     public void setTableToPlayerSuccessfull(){
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         player.setTable(new Table(4));
         assertNotNull(player.getTable());
     }
 
     @Test
     public void setPlaceToPlayerSuccessfull(){
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         player.setPlace(2);
         assertEquals(2, player.getPlace());
     }
 
     @Test
     public void setActiveToPlayerSuccessfull(){
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         player.setActive(false);
         assertEquals(false, player.isActive());
     }
 
     @Test
     public void getPlayerConnectorSuccessfull(){
-        PlayerConnector playerConnector = new PlayerConnector(null, null, null);
+        PlayerConnector playerConnector = new PlayerConnector(null);
         Player player = new Player("1", playerConnector);
         assertEquals(playerConnector, player.getPlayerConnector());
     }
@@ -55,7 +55,7 @@ public class PlayerTests {
     @Test
     public void playerLeaveTableSuccessfull(){
         Table table = new Table(3);
-        Player player = new Player("1", new PlayerConnector(null, null, null));
+        Player player = new Player("1", new PlayerConnector(null));
         table.addPlayer(player);
         player.setTable(table);
         player.leaveTable();

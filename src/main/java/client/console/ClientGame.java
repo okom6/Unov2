@@ -1,7 +1,7 @@
-package client;
+package client.console;
 
+import client.ConnectionToServer;
 import error.ErrorCode;
-import server.game.GameInfo;
 import server.game.actors.PlayerGameStateToSend;
 
 public class ClientGame {

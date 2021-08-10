@@ -56,7 +56,7 @@ public class GameOperationsTests{
     public void takeCardsFromMainDeckToPlayerSuccessfull(){
         GameOperations gameOperations = new GameOperations();
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         ArrayList<Card> deck = new ArrayList<>();
         deck.add(new Card('b', '4'));
         deck.add(new Card('g', '0'));
@@ -71,10 +71,10 @@ public class GameOperationsTests{
     public void checkNumberOfActivePlayersWithNoOneFinished(){
         GameOperations gameOperations = new GameOperations();
         PlayerDeck playerDeck1 = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
 
         PlayerDeck playerDeck2 = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
 
         ArrayList<PlayerDeck> playerDeckArrayList = new ArrayList<>();
         playerDeckArrayList.add(playerDeck1);
@@ -86,12 +86,12 @@ public class GameOperationsTests{
     public void checkNumberOfActivePlayersWithFinished(){
         GameOperations gameOperations = new GameOperations();
         PlayerDeck playerDeck1 = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck1.getPlayer().setPlace(1);
         playerDeck1.getPlayer().setActive(false);
 
         PlayerDeck playerDeck2 = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
 
         ArrayList<PlayerDeck> playerDeckArrayList = new ArrayList<>();
         playerDeckArrayList.add(playerDeck1);
@@ -104,7 +104,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('b', '0'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -119,7 +119,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', true, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('b', 's'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -134,7 +134,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('s', 'c'));
         playerDeck.getHandDeck().add(new Card('r', '0'));
 
@@ -152,7 +152,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('b', '4'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -167,7 +167,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('s', 'c'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -182,7 +182,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', '4'));
         playerDeck.getHandDeck().add(new Card('r', '9'));
 
@@ -200,7 +200,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', '9'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -215,7 +215,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, true, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', 'g'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -230,7 +230,7 @@ public class GameOperationsTests{
         GameOperations gameOperations = new GameOperations();
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, true, 1);
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('s', '4'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -246,7 +246,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', true, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', '9'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -267,7 +267,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, true, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', '9'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -292,7 +292,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, true, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', '9'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -317,7 +317,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', '9'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -342,7 +342,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('b', 'c'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -365,7 +365,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', 's'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -388,7 +388,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('g', 't'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -411,7 +411,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('r', '3'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -433,7 +433,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('s', '4'));
 
         ArrayList<Card> stack = new ArrayList<>();
@@ -457,7 +457,7 @@ public class GameOperationsTests{
         GameInfo gameInfo = new GameInfo(false, 0, 'r', false, false, 1);
 
         PlayerDeck playerDeck = new PlayerDeck(new Player("1",
-                new PlayerConnector(null, null, null)));
+                new PlayerConnector(null)));
         playerDeck.getHandDeck().add(new Card('r', 'g'));
 
         ArrayList<Card> stack = new ArrayList<>();
