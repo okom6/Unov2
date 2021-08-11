@@ -52,6 +52,7 @@ public class Server {
                     playerConnector
             ), Integer.parseInt(playerConnector.getInfoFromPlayer()));
             //), 1);
+
         }
 
         public boolean checkConnection(PlayerConnector playerConnector){

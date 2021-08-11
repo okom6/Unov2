@@ -5,7 +5,6 @@ import server.game.actors.Card;
 import server.game.actors.PlayerDeck;
 import server.game.actors.PlayerGameStateToSend;
 
-
 import java.util.ArrayList;
 
 public class GameOperations {
