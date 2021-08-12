@@ -1,6 +1,5 @@
 package client.console;
 
-import client.ConnectionToServer;
 import server.game.actors.Card;
 import server.game.actors.PlayerGameStateToSend;
 

@@ -1,6 +1,6 @@
 package client.Gui;
 
-import client.ConnectionToServer;
+import client.console.ConnectionToServer;
 import client.Gui.comandBuilder.CommandBuilderDirector;
 import client.Gui.comandBuilder.PutCommandBuilder;
 import client.Gui.comandBuilder.TakeCommandBuilder;
@@ -192,20 +192,28 @@ public class Gui extends JFrame {
     }
 
     public void updateButtons(ArrayList<Card> handDeck){
-        cardButtonsGroup = new ButtonGroup();
-        cardsButtons.clear();
+        deleteOldButtons();
 
         for(int i = 0 ; i < handDeck.size(); i++){
             JToggleButton button = new JToggleButton(
-                    handDeck.get(i).getCharacter() + "-" + handDeck.get(i).getColour());
+                    handDeck.get(i).getColour() + "-" + handDeck.get(i).getCharacter());
             button.setName(Integer.toString(i));
+            System.out.println("Button name: " + button.getName());
             cardsButtons.add(button);
             cardButtonsGroup.add(button);
         }
     }
 
+    private void deleteOldButtons(){
+        for (JToggleButton button: cardsButtons) {
+            cardButtonsGroup.remove(button);
+            remove(button);
+        }
+        cardsButtons.clear();
+    }
+
     public void updatePlayersInfo(ArrayList<Integer> playersCardNumbers, int playerNumber){
-        playersInfo.clear();
+        deleteOldPlayersInfo();
 
         for(int i = 0 ; i < playersCardNumbers.size(); i++){
             JLabel l = new JLabel();
@@ -221,9 +229,16 @@ public class Gui extends JFrame {
         }
     }
 
+    private void deleteOldPlayersInfo(){
+        for (JLabel playerInfo: playersInfo) {
+            remove(playerInfo);
+        }
+        playersInfo.clear();
+    }
+
     public void updadeGameBoardInfo(Card cardOnTop, boolean stopBattle, boolean takeBattle,
                                     boolean thisPlayerTurn, char declaratedColour, int playerTurn){
-        this.cardOnTopInfo.setText(cardOnTop.getCharacter() + "-" + cardOnTop.getColour());
+        this.cardOnTopInfo.setText(cardOnTop.getColour() + "-" + cardOnTop.getCharacter());
         this.gameBoardInfo.setText("Is stop battle: " + Boolean.toString(stopBattle)
                 + "\n" + "Is take battle: " + Boolean.toString(takeBattle)
                 + "\n" + ((thisPlayerTurn) ? "It is your turn" : "It is " + Integer.toString(playerTurn + 1)) + " player turn"
@@ -237,6 +252,19 @@ public class Gui extends JFrame {
         errorCodeInfo.repaint();
     }
 
+    public void setEndgameInfo(String placeInfo){
+        if (placeInfo.equals("-1")) {
+            this.gameBoardInfo.setText("Jesteś ostatni. Przegrałeś!");
+        } else{
+            this.gameBoardInfo.setText("Miejsce " + placeInfo);
+        }
+        this.gameBoardInfo.repaint();
+
+        deleteOldButtons();
+        deleteOldPlayersInfo();
+        this.repaint();
+    }
+
     public static void main(String[] args){
         Gui gui = new Gui();
         gui.setVisible(true);
@@ -247,24 +275,6 @@ public class Gui extends JFrame {
         ClientGuiMediator clientGuiMediator = new ClientGuiMediator(gui, guiClientGame);
 
         guiClientGame.reciveMessagesAbautGameState();
-    }
-
-    private void addTestButtons(){
-        for(int i = 0 ; i < 10; i++){
-            JToggleButton b = new JToggleButton(Integer.toString(i + 1));
-            b.setName(Integer.toString(i));
-            cardsButtons.add(b);
-            cardButtonsGroup.add(b);
-        }
-    }
-
-    private void addTestPlayersInfo(){
-        for(int i = 0 ; i < 5; i++){
-            JLabel l = new JLabel();
-            l.setText("Player " + Integer.toString(i + 1));
-            l.setName(Integer.toString(i));
-            playersInfo.add(l);
-        }
     }
 
 }

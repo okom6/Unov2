@@ -1,7 +1,8 @@
 package client.Gui;
 
-import client.ConnectionToServer;
+import client.console.ConnectionToServer;
 import error.ErrorCode;
+import server.actors.Player;
 import server.game.actors.PlayerGameStateToSend;
 
 public class GuiClientGame {
@@ -23,48 +24,77 @@ public class GuiClientGame {
         connectionToServer.sendMessage(Integer.toString(Integer.parseInt(connectionToServer.reciveMessage()) + 1));
         connectionToServer.sendMessage("2"); //wybór pokoju
 
-        while(!endGame){
-            //System.out.println(downloadDataFromServer);
-            if(downloadDataFromServer) {
-                PlayerGameStateToSend playerGameStateToSend = reciveGameStatus();
+        while(true){
+
+            /*try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+
+            System.out.println("Pobrano wiadomość");
+            Object recivedObject = reciveRawObject();
+
+            if(verifyTypePlayerGameStateToSend(recivedObject)){
+                PlayerGameStateToSend playerGameStateToSend = (PlayerGameStateToSend) recivedObject;
 
                 endGame = playerGameStateToSend.isEndGame();
 
-                clientGuiMediator.updateGui(playerGameStateToSend);
+                if(endGame){break;}
 
-                if(clientGuiMediator.isThisPlayerTurn()) {downloadDataFromServer = false;}
+                clientGuiMediator.updateGui(playerGameStateToSend);
+            }
+            if(verifyTypeErrorCode(recivedObject)){
+                ErrorCode errorCode = (ErrorCode) recivedObject;
+
+                clientGuiMediator.updateGuiWithErrorCode(errorCode);
             }
 
             /*
             dopisać zarządzanie ostatnią wiadomością
              */
         }
+        System.out.println("Koniec gry");
+
+        clientGuiMediator.showEndgameStatus(recivePlaceInfo());
+
+        connectionToServer.stopConnection();
     }
 
-    public ErrorCode sendMoveToServer(String command){
+
+
+    public void sendMoveToServer(String command){
         sendMessageToServer(command);
-        ErrorCode errorCode = reciveErrorCode();
-        if(errorCode.getCode() == 0) {downloadDataFromServer = true;}
-        return errorCode;
     }
+
 
     public void sendMessageToServer(String command){
         connectionToServer.sendMessage(command);
-    }
-
-    public void setEndGame(boolean endGame) {
-        this.endGame = endGame;
-    }
-
-    public PlayerGameStateToSend reciveGameStatus(){
-        return connectionToServer.reciveObject();
     }
 
     public String recivePlaceInfo(){
         return connectionToServer.reciveMessage();
     }
 
-    public ErrorCode reciveErrorCode(){
-        return connectionToServer.reciveErrorCode();
+    public boolean verifyTypePlayerGameStateToSend(Object object){
+        try{
+            PlayerGameStateToSend playerGameStateToSend = (PlayerGameStateToSend) object;
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public boolean verifyTypeErrorCode(Object object){
+        try{
+            ErrorCode errorCode = (ErrorCode) object;
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public Object reciveRawObject(){
+        return connectionToServer.reciveRawObject();
     }
 }

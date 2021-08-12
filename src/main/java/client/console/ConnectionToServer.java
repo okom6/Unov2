@@ -1,4 +1,4 @@
-package client;
+package client.console;
 
 import error.ErrorCode;
 import server.game.actors.PlayerGameStateToSend;
@@ -11,7 +11,7 @@ public class ConnectionToServer {
     private PrintWriter out;
     private BufferedReader in;
 
-    ConnectionToServer(String ip, int port) {
+    public ConnectionToServer(String ip, int port) {
         try {
             clientSocket = new Socket(ip, port);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -39,7 +39,27 @@ public class ConnectionToServer {
         try {
             InputStream inputStream = clientSocket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            return (PlayerGameStateToSend) objectInputStream.readObject();
+            PlayerGameStateToSend playerGameStateToSend = (PlayerGameStateToSend) objectInputStream.readObject();
+            //
+            ClientGameOperations clientGameOperations = new ClientGameOperations();
+            System.out.println("Początek odbioru");
+            //clientGameOperations.showGameInfo(playerGameStateToSend);
+            System.out.println("Koniec odbioru");
+            //
+            return playerGameStateToSend;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Object reciveRawObject() {
+        try {
+            InputStream inputStream = clientSocket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            return objectInputStream.readObject();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

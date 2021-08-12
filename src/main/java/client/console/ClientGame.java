@@ -1,6 +1,5 @@
 package client.console;
 
-import client.ConnectionToServer;
 import error.ErrorCode;
 import server.game.actors.PlayerGameStateToSend;
 

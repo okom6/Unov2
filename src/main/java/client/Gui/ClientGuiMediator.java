@@ -44,8 +44,10 @@ public class ClientGuiMediator {
             return;
         }
         String command = commandBuilderDirector.createCommand(cardButtonsGroup, colourRequestButtonsGroup);
+        System.out.println("Komenda: " + command);
+        guiClientGame.sendMoveToServer(command);
 
-        updateGuiWithErrorCode(guiClientGame.sendMoveToServer(command));
+        //updateGuiWithErrorCode(guiClientGame.sendMoveToServer(command));
     }
 
     public void updateGuiWithErrorCode(ErrorCode errorCode){
@@ -58,5 +60,14 @@ public class ClientGuiMediator {
 
     public boolean isThisPlayerTurn() {
         return thisPlayerTurn;
+    }
+
+    public void showEndgameStatus(String placeInfo){
+        gui.setEndgameInfo(placeInfo);
+        /*if (placeInfo.equals("-1")) {
+            System.out.println("Jesteś ostatni. Przegrałeś!");
+        } else{
+            System.out.println("Miejsce " + placeInfo);
+        }*/
     }
 }

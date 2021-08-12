@@ -1,7 +1,5 @@
 package client.console;
 
-import client.ConnectionToServer;
-
 public class Client {
 
     public static void main(String[] args){

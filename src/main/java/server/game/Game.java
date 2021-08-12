@@ -55,6 +55,7 @@ public class Game {
 
             //odebrać info od gracza jaką wybrał kartę (lub czy dobrał) ([czynność-numer (karty lub dobrania)-rządanie koloru]
             String response = actualPlayerTurn.getPlayer().getPlayerConnector().getInfoFromPlayer();
+            System.out.println("Komenda od gracza: " + response);
             //int responseNumberumber = Integer.parseInt(response.split("-")[0]);
 
             ErrorCode info = gameOperations.checkRules(actualPlayerTurn, stack, response, gameInfo);
@@ -62,6 +63,7 @@ public class Game {
             while (info.getCode() != 0){
                 actualPlayerTurn.getPlayer().getPlayerConnector().sendErrorCodeToPlayer(info);
                 response = actualPlayerTurn.getPlayer().getPlayerConnector().getInfoFromPlayer();
+                System.out.println("Komenda od gracza: " + response);
                 info = gameOperations.checkRules(actualPlayerTurn, stack, response, gameInfo);
             }
             actualPlayerTurn.getPlayer().getPlayerConnector().sendErrorCodeToPlayer(info);

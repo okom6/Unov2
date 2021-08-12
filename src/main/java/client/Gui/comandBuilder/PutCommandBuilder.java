@@ -13,6 +13,7 @@ public class PutCommandBuilder extends CommandBuilder{
     @Override
     public void buildCommandChoosenCard(ButtonGroup cardButtonsGroup) {
         String buttonGroupValue = getValueFromButtonGroup(cardButtonsGroup);
+        System.out.println("buttonGroupValue: " + buttonGroupValue);
         if(buttonGroupValue != null){
             command += "-" + buttonGroupValue;
         } else {
@@ -23,6 +24,7 @@ public class PutCommandBuilder extends CommandBuilder{
     @Override
     public void buildCommandChoosenColour(ButtonGroup colourRequestButtonsGroup) {
         String buttonGroupValue = getValueFromButtonGroup(colourRequestButtonsGroup);
+        System.out.println("buttonGroupValue: " + buttonGroupValue);
         if(buttonGroupValue != null){
             command += "-" + buttonGroupValue;
         } else {
