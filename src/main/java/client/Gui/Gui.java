@@ -14,9 +14,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public class Gui extends JFrame {
     private ClientGuiMediator clientGuiMediator;
+    private CardsImageAdder cardsImageAdder;
 
     private ButtonGroup cardButtonsGroup = new ButtonGroup();
     private ArrayList<JToggleButton> cardsButtons = new ArrayList<>();
@@ -43,6 +46,8 @@ public class Gui extends JFrame {
         setLocation(new Point(0,0));
         setLayout(null);
         setResizable(false);
+
+        cardsImageAdder = new CardsImageAdder();
 
         initComponents();
         initEvent();
@@ -144,15 +149,15 @@ public class Gui extends JFrame {
 
     private void initLabels(){
         errorCodeInfo.setBounds(1550,200,250,40);
-        errorCodeInfo.setText("error code info");
+        errorCodeInfo.setText("Informacje o ruchach");
         add(errorCodeInfo);
 
-        gameBoardInfo.setBounds(860,450,250,40);
-        gameBoardInfo.setText("game board info");
+        gameBoardInfo.setBounds(860,370,250,200);
+        gameBoardInfo.setText("Informacje o grze");
         add(gameBoardInfo);
 
-        cardOnTopInfo.setBounds(600,450,250,40);
-        cardOnTopInfo.setText("card on top");
+        cardOnTopInfo.setBounds(600,370,100,200);
+        cardOnTopInfo.setText("Karta na stosie");
         add(cardOnTopInfo);
     }
 
@@ -198,6 +203,8 @@ public class Gui extends JFrame {
             JToggleButton button = new JToggleButton(
                     handDeck.get(i).getColour() + "-" + handDeck.get(i).getCharacter());
             button.setName(Integer.toString(i));
+            cardsImageAdder.addImageToButton(button, handDeck.get(i));
+
             System.out.println("Button name: " + button.getName());
             cardsButtons.add(button);
             cardButtonsGroup.add(button);
@@ -218,11 +225,11 @@ public class Gui extends JFrame {
         for(int i = 0 ; i < playersCardNumbers.size(); i++){
             JLabel l = new JLabel();
             if(i != playerNumber) {
-                l.setText("Player " + Integer.toString(i + 1) + "\n\n" +
-                        "Cards" + Integer.toString(playersCardNumbers.get(i)));
+                l.setText("<html>" + "Gracz " + Integer.toString(i + 1) + "<br><br>" +
+                        "Karty: " + Integer.toString(playersCardNumbers.get(i)) + "</html>");
             } else {
-                l.setText("You " + "\n\n" +
-                        "Cards" + Integer.toString(playersCardNumbers.get(i)));
+                l.setText("<html>" + "Ty " + "<br><br>" +
+                        "Karty: " + Integer.toString(playersCardNumbers.get(i)) + "</html>");
             }
             l.setName(Integer.toString(i));
             playersInfo.add(l);
@@ -238,17 +245,39 @@ public class Gui extends JFrame {
 
     public void updadeGameBoardInfo(Card cardOnTop, boolean stopBattle, boolean takeBattle,
                                     boolean thisPlayerTurn, char declaratedColour, int playerTurn){
-        this.cardOnTopInfo.setText(cardOnTop.getColour() + "-" + cardOnTop.getCharacter());
-        this.gameBoardInfo.setText("Is stop battle: " + Boolean.toString(stopBattle)
-                + "\n" + "Is take battle: " + Boolean.toString(takeBattle)
-                + "\n" + ((thisPlayerTurn) ? "It is your turn" : "It is " + Integer.toString(playerTurn + 1)) + " player turn"
-                + ((cardOnTop.getColour() == 's') ? "\nDeclarated colour: " + declaratedColour : ""));
+        //this.cardOnTopInfo.setText(cardOnTop.getColour() + "-" + cardOnTop.getCharacter());
+        Function<Boolean, String> boleanToStringInLanguage = x -> (true) ? "Tak" : "Nie";
+        UnaryOperator<String> symbolToText = x -> {
+            switch (x){
+                case "y":
+                    return "Żółty";
+                case "b":
+                    return "Niebieski";
+                case "r":
+                    return "Czerwony";
+                case "g":
+                    return "Zielony";
+                default:
+                    return x;
+            }
+        };
+
+        cardsImageAdder.addImageToLabel(this.cardOnTopInfo, cardOnTop);
+        this.gameBoardInfo.setText("<html>" + "Walka o stop: " + boleanToStringInLanguage.apply(stopBattle)+ "<br><br>"
+                + "\n" + "Walka o pobranie kart: " + boleanToStringInLanguage.apply(takeBattle) + "<br><br>"
+                + "\n" + ((thisPlayerTurn) ? "Twoja tura" : "Tura gracza " + Integer.toString(playerTurn + 1))
+                + ((cardOnTop.getColour() == 's') ? "<br><br>Zadeklarowny kolor: " + symbolToText.apply(String.valueOf(declaratedColour)) : "") + "</html>");
         this.cardOnTopInfo.repaint();
         this.gameBoardInfo.repaint();
     }
 
     public void updadeErrorCodeInfo(ErrorCode errorCode){
         errorCodeInfo.setText(errorCode.getInfo());
+        errorCodeInfo.repaint();
+    }
+
+    public void updadeErrorCodeInfo(String errorCode){
+        errorCodeInfo.setText(errorCode);
         errorCodeInfo.repaint();
     }
 

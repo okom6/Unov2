@@ -25,8 +25,8 @@ public class ClientGuiMediator {
         System.out.println("Update");
 
         //
-        ClientGameOperations clientGameOperations = new ClientGameOperations();
-        clientGameOperations.showGameInfo(playerGameStateToSend);
+        /*ClientGameOperations clientGameOperations = new ClientGameOperations();
+        clientGameOperations.showGameInfo(playerGameStateToSend);*/
         //
 
         gui.updateButtons(playerGameStateToSend.getHandDeck());
@@ -41,6 +41,7 @@ public class ClientGuiMediator {
     public void sendMoveToServer(CommandBuilderDirector commandBuilderDirector, ButtonGroup cardButtonsGroup,
                                  ButtonGroup colourRequestButtonsGroup){
         if(!thisPlayerTurn){
+            gui.updadeErrorCodeInfo("Nie twoja tura");
             return;
         }
         String command = commandBuilderDirector.createCommand(cardButtonsGroup, colourRequestButtonsGroup);

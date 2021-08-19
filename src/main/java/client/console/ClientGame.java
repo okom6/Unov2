@@ -10,7 +10,7 @@ public class ClientGame {
 
         /*walidacja połączenia (jest po stronie serwera)*/
         connectionToServer.sendMessage(Integer.toString(Integer.parseInt(connectionToServer.reciveMessage()) + 1));
-        connectionToServer.sendMessage("2"); //wybór pokoju
+        //connectionToServer.sendMessage("2"); //wybór pokoju
 
         PlayerGameStateToSend gameInfo = clientGameOperations.reciveGameStatus(connectionToServer);
         //clientGameOperations.showGameInfo(gameInfo);

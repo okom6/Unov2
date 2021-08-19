@@ -15,6 +15,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Server {
 
     private ServerSocket serverSocket;
+    private int roomSize;
+
+    public Server(int roomSize){
+        this.roomSize = roomSize;
+    }
 
     public void start(int port) {
         try {
@@ -24,7 +29,7 @@ public class Server {
         }
         while (true) {
             try {
-                new ClientHandler(serverSocket.accept()).start();
+                new ClientHandler(serverSocket.accept(), roomSize).start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -33,9 +38,11 @@ public class Server {
 
     private static class ClientHandler extends Thread {
         private Socket clientSocket;
+        private int roomSize;
 
-        public ClientHandler(Socket socket) {
+        public ClientHandler(Socket socket, int roomSize) {
             this.clientSocket = socket;
+            this.roomSize = roomSize;
         }
 
         public void run() {
@@ -46,11 +53,12 @@ public class Server {
                 return;
             }
 
+
             Room.getInstance().addPlayer(new Player(
                     Integer.toString(Room.getInstance().getPlayers().size() +
                             ThreadLocalRandom.current().nextInt(1, 9999999 + 1)),
                     playerConnector
-            ), Integer.parseInt(playerConnector.getInfoFromPlayer()));
+            ), roomSize);
             //), 1);
 
         }
@@ -67,8 +75,8 @@ public class Server {
     }
 
     public static void main(String[] args){
-        Room.getInstance().addTable(1);
-        Server server = new Server();
+        //Room.getInstance().addTable(1);
+        Server server = new Server(2);
         server.start(7777);
     }
 }

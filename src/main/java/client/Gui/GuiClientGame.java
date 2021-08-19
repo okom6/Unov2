@@ -22,7 +22,7 @@ public class GuiClientGame {
     public void reciveMessagesAbautGameState(){
         /*walidacja połączenia (jest po stronie serwera)*/
         connectionToServer.sendMessage(Integer.toString(Integer.parseInt(connectionToServer.reciveMessage()) + 1));
-        connectionToServer.sendMessage("2"); //wybór pokoju
+        //connectionToServer.sendMessage("2"); //wybór pokoju
 
         while(true){
 
