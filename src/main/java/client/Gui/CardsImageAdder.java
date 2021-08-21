@@ -15,6 +15,6 @@ public class CardsImageAdder {
     }
 
     public String createImageFileName(Card card){
-        return "card_images/" + card.getColour() + "_" + card.getCharacter() + ".jpg";
+        return "src/main/resources/card_images/" + card.getColour() + "_" + card.getCharacter() + ".jpg";
     }
 }
