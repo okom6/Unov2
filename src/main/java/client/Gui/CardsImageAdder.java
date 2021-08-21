@@ -15,6 +15,6 @@ public class CardsImageAdder {
     }
 
     public String createImageFileName(Card card){
-        return "src/main/resources/card_images/" + card.getColour() + "_" + card.getCharacter() + ".jpg";
+        return "C:/Users/Michal/Documents/Unov2/card_images/" + card.getColour() + "_" + card.getCharacter() + ".jpg";
     }
 }
