@@ -246,7 +246,7 @@ public class Gui extends JFrame {
     public void updadeGameBoardInfo(Card cardOnTop, boolean stopBattle, boolean takeBattle,
                                     boolean thisPlayerTurn, char declaratedColour, int playerTurn){
         //this.cardOnTopInfo.setText(cardOnTop.getColour() + "-" + cardOnTop.getCharacter());
-        Function<Boolean, String> boleanToStringInLanguage = x -> (true) ? "Tak" : "Nie";
+        Function<Boolean, String> boleanToStringInLanguage = x -> (x) ? "Tak" : "Nie";
         UnaryOperator<String> symbolToText = x -> {
             switch (x){
                 case "y":

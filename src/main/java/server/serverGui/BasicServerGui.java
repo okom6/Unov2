@@ -1,6 +1,9 @@
 package server.serverGui;
 
+import server.PlayerConnector;
 import server.Server;
+import server.actors.Player;
+import server.actors.Room;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,8 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BasicServerGui extends JFrame {
     private ButtonGroup radioButtonGroup = new ButtonGroup();
@@ -19,6 +25,7 @@ public class BasicServerGui extends JFrame {
 
     private boolean serverRunned = false;
 
+    private Thread serverThread;
 
     public BasicServerGui(){
         setTitle("SERWER UNO");
@@ -85,12 +92,8 @@ public class BasicServerGui extends JFrame {
         infoLabel.setText("Serwer włączony");
         infoLabel.repaint();
 
-
-        /*infoLabel.setText(valueFromButtonGroup);
-        infoLabel.repaint();*/
-
-        Server server = new Server(2);
-        server.start(7777);
+        serverThread = new Thread(new ServerThreat(Integer.parseInt(valueFromButtonGroup)));
+        serverThread.start();
     }
 
     private String getValueFromButtonGroup(ButtonGroup buttonGroup){
@@ -103,6 +106,19 @@ public class BasicServerGui extends JFrame {
         }
 
         return null;
+    }
+
+    private static class ServerThreat implements Runnable{
+        private int roomSize;
+
+        public ServerThreat(int roomSize) {
+            this.roomSize = roomSize;
+        }
+
+        public void run() {
+            Server server = new Server(roomSize);
+            server.start(7777);
+        }
     }
 
     public static void main(String[] args){
